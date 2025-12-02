@@ -70,7 +70,7 @@
             margin-left: auto;
             margin-right: auto;
         }
-        .hero-prompt { font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem; font-weight: 500; letter-spacing: 1px; }
+        .hero-prompt { font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 1px; }
         
         .btn-quick-kw { 
             background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.6); 
@@ -81,6 +81,25 @@
         }
         .btn-quick-kw:hover { background: white; color: var(--primary-color); transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
         
+        /* Refresh Button Style */
+        .btn-refresh-keywords {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.7);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            margin-bottom: 15px; /* Space between refresh button and keyword buttons */
+            transition: all 0.3s;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .btn-refresh-keywords:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-color: white;
+        }
+
         .btn-full-budget { 
             background: var(--accent-color); color: white; font-weight: bold; 
             margin-top: 20px; border-radius: 50px; padding: 10px 35px; border: none; 
@@ -188,7 +207,13 @@
                 
                 <div class="hero-quick-links">
                     <p class="hero-prompt">你可以選擇你關心的議題，或直接看完整的預算→</p>
+                    
+                    <button class="btn-refresh-keywords" onclick="renderRandomKeywords('hero-random-keywords')">
+                        🔄 換一組關鍵字
+                    </button>
+                    
                     <div id="hero-random-keywords" class="d-flex justify-content-center flex-wrap mb-2"></div>
+                    
                     <button class="btn btn-full-budget" onclick="goToStep(1)">看完整預算</button>
                 </div>
             </div>
@@ -394,6 +419,7 @@
         }
 
         function useDemoData() {
+            // Default demo data in case of error
             const demoRows = [
                 { category: 'state', title: '機關基本運作', agency: '總統府', amount: '10.8 億元', details: '古蹟修繕;資安維護', review_status: '照案通過', sub_breakdown: '人員:700000; 古蹟:300000', cut_frozen_val: '100, 200', review_stats: '100,50; 80,50; 80,50', details_table: '水電|刪100', general_cut: '', legis_cut: '王大明', legis_freeze: '李四' }
             ];
@@ -463,6 +489,8 @@
             return null;
         }
 
+        // ================= NAVIGATION SYSTEM =================
+
         function pushHistory() {
             historyStack.push(JSON.parse(JSON.stringify(currentView)));
         }
@@ -492,6 +520,8 @@
                 renderStep4(state.plan, false);
             }
         }
+
+        // ================= ACTIONS =================
 
         function goToStep(step, isPush = true) {
             if(isPush) {
@@ -542,7 +572,7 @@
             updateBreadcrumbs();
         }
 
-        // ★★★ Added renderCategories Function here ★★★
+        // ★★★ Re-added renderCategories Function ★★★
         function renderCategories() {
             const container = document.getElementById('category-container');
             if(!container) return;
@@ -774,7 +804,6 @@
                 const targetCat = getCategoryForKeyword(kw);
                 btn.onclick = () => {
                     if (targetCat) {
-                        // ★★★ Fix: Pass targetCat explicitly ★★★
                         const targetPlans = groupedData[targetCat][kw];
                         renderStep3List(kw, targetPlans, true, targetCat); 
                     } else { alert("無法找到此關鍵字"); }
@@ -828,7 +857,7 @@
                 catLi.className = 'breadcrumb-item';
                 if(currentView.step === 1) { catLi.classList.add('active'); catLi.innerText = '選擇類別'; }
                 else { 
-                    const catName = CATEGORY_CONFIG[currentView.catKey] ? CATEGORY_CONFIG[currentView.catKey].name : '類別';
+                    const catName = (currentView.catKey && CATEGORY_CONFIG[currentView.catKey]) ? CATEGORY_CONFIG[currentView.catKey].name : '類別';
                     catLi.innerHTML = `<a onclick="goToStep(1)">${catName}</a>`; 
                 }
                 list.appendChild(catLi);
@@ -849,7 +878,6 @@
                 listLi.className = 'breadcrumb-item';
                 if(currentView.step === 3) { listLi.classList.add('active'); listLi.innerText = '計畫清單'; }
                 else { 
-                    const plans = groupedData[currentView.catKey][currentView.kw];
                     listLi.innerHTML = `<a onclick="renderStep3List('${currentView.kw}', groupedData['${currentView.catKey}']['${currentView.kw}'], true, '${currentView.catKey}')">計畫清單</a>`;
                 }
                 list.appendChild(listLi);
