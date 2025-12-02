@@ -182,6 +182,7 @@
             <div class="hero-bg-pattern"></div>
             <div class="container position-relative z-2">
                 <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">2026 政府預算專題</span>
+                
                 <h1 class="hero-title">115年度總預算<br>來看看我的錢被花去哪？</h1>
                 <p class="fs-4 mb-3 opacity-75">中央政府歲出規模約 3 兆元。<br>您的納稅錢如何分配？審查過程刪了多少？</p>
                 
@@ -200,7 +201,7 @@
 
             <section id="step-1" class="step-section">
                 <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回首頁</button>
+                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
                 </div>
                 <div class="text-start mb-5">
                     <h2 class="display-6 fw-bold mb-2">請選擇支出類別</h2>
@@ -486,7 +487,7 @@
                 selectCategory(state.catKey, false);
             } else if (state.step === 3) {
                 const plans = groupedData[state.catKey][state.kw];
-                renderStep3List(state.kw, plans, false, state.catKey); // Pass explicit catKey
+                renderStep3List(state.kw, plans, false, state.catKey); 
             } else if (state.step === 4) {
                 renderStep4(state.plan, false);
             }
@@ -533,7 +534,7 @@
                 btn.className = `btn keyword-btn`;
                 let html = `${keyword} <span class="badge bg-warning text-dark ms-1 rounded-pill">${count}</span>`;
                 btn.innerHTML = html;
-                btn.onclick = () => renderStep3List(keyword, plans, true, catKey);
+                btn.onclick = () => renderStep3List(keyword, plans);
                 container.appendChild(btn);
             });
 
@@ -541,7 +542,33 @@
             updateBreadcrumbs();
         }
 
-        // ★★★ Fixed: Added explicitCatKey param ★★★
+        // ★★★ Added renderCategories Function here ★★★
+        function renderCategories() {
+            const container = document.getElementById('category-container');
+            if(!container) return;
+            container.innerHTML = '';
+            for (const [key, config] of Object.entries(CATEGORY_CONFIG)) {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 col-12';
+                col.innerHTML = `
+                    <div class="card category-card">
+                        <div class="category-header" style="background-color: ${config.color};">
+                            <div><div class="cat-icon">${config.icon}</div>${config.name}</div>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="card-text text-muted">${config.desc}</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">總預算</small>
+                                <span class="fw-bold text-dark">${config.total}</span>
+                            </div>
+                        </div>
+                    </div>`;
+                col.querySelector('.category-card').onclick = () => selectCategory(key);
+                container.appendChild(col);
+            }
+        }
+
         function renderStep3List(keyword, plans, isPush = true, explicitCatKey = null) {
             if(isPush) pushHistory();
 
@@ -730,31 +757,6 @@
             updateBreadcrumbs();
         }
 
-        function renderCategories() {
-            const container = document.getElementById('category-container');
-            container.innerHTML = '';
-            for (const [key, config] of Object.entries(CATEGORY_CONFIG)) {
-                const col = document.createElement('div');
-                col.className = 'col-md-4 col-12';
-                col.innerHTML = `
-                    <div class="card category-card">
-                        <div class="category-header" style="background-color: ${config.color};">
-                            <div><div class="cat-icon">${config.icon}</div>${config.name}</div>
-                        </div>
-                        <div class="card-body p-4">
-                            <p class="card-text text-muted">${config.desc}</p>
-                            <hr>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">總預算</small>
-                                <span class="fw-bold text-dark">${config.total}</span>
-                            </div>
-                        </div>
-                    </div>`;
-                col.querySelector('.category-card').onclick = () => selectCategory(key);
-                container.appendChild(col);
-            }
-        }
-
         function renderRandomKeywords(containerId) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
@@ -826,7 +828,7 @@
                 catLi.className = 'breadcrumb-item';
                 if(currentView.step === 1) { catLi.classList.add('active'); catLi.innerText = '選擇類別'; }
                 else { 
-                    const catName = (currentView.catKey && CATEGORY_CONFIG[currentView.catKey]) ? CATEGORY_CONFIG[currentView.catKey].name : '類別';
+                    const catName = CATEGORY_CONFIG[currentView.catKey] ? CATEGORY_CONFIG[currentView.catKey].name : '類別';
                     catLi.innerHTML = `<a onclick="goToStep(1)">${catName}</a>`; 
                 }
                 list.appendChild(catLi);
@@ -847,6 +849,7 @@
                 listLi.className = 'breadcrumb-item';
                 if(currentView.step === 3) { listLi.classList.add('active'); listLi.innerText = '計畫清單'; }
                 else { 
+                    const plans = groupedData[currentView.catKey][currentView.kw];
                     listLi.innerHTML = `<a onclick="renderStep3List('${currentView.kw}', groupedData['${currentView.catKey}']['${currentView.kw}'], true, '${currentView.catKey}')">計畫清單</a>`;
                 }
                 list.appendChild(listLi);
@@ -858,6 +861,13 @@
                 detailLi.innerText = '詳細內容';
                 list.appendChild(detailLi);
             }
+        }
+
+        function goToStep(step) {
+            pushHistory();
+            currentView = { step: step };
+            switchSection(step);
+            updateBreadcrumbs();
         }
     </script>
 </body>
