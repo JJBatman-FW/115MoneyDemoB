@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>預算審查觀測站B版 - 115年度總預算</title>
+    <title>預算審查觀測站 - 115年度總預算</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
@@ -29,12 +29,12 @@
 
         /* HEADER */
         .site-header { background-color: var(--primary-color); padding: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .site-brand { color: white; font-size: 1.5rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; }
+        .site-brand { color: white; font-size: 1.5rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; cursor: pointer; }
         .site-brand:hover { color: #ecf0f1; }
 
         /* BREADCRUMB */
         .custom-breadcrumb { background: transparent; padding: 0; margin-bottom: 1rem; font-size: 0.85rem; }
-        .breadcrumb-item a { color: #6c757d; text-decoration: none; }
+        .breadcrumb-item a { color: #6c757d; text-decoration: none; cursor: pointer; transition: color 0.2s; }
         .breadcrumb-item a:hover { color: var(--primary-color); text-decoration: underline; }
         .breadcrumb-item.active { color: #adb5bd; }
         .breadcrumb-item + .breadcrumb-item::before { color: #ccc; }
@@ -43,59 +43,78 @@
         .site-footer { background-color: #212529; color: #adb5bd; padding: 2rem 0; margin-top: auto; font-size: 0.9rem; text-align: center; }
         .footer-source { color: #6c757d; font-size: 0.8rem; margin-top: 0.5rem; }
 
-        /* Hero */
-        .hero-section { min-height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; text-align: center; padding: 2rem; position: relative; overflow: hidden; }
+        /* HERO (Centered) */
+        .hero-section { 
+            min-height: 85vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            color: white; 
+            text-align: center; 
+            padding: 2rem; 
+            position: relative; 
+            overflow: hidden; 
+        }
         .hero-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px; }
-        .hero-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 1.5rem; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .btn-start { padding: 15px 50px; font-size: 1.3rem; border-radius: 50px; background-color: var(--accent-color); color: white; border: none; z-index: 2; transition: all 0.3s; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); }
-        .btn-start:hover { transform: translateY(-3px); background-color: #c0392b; box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6); }
+        .hero-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 
-        /* Hero Quick Links */
-        .hero-quick-links { margin-top: 3rem; z-index: 2; text-align: center; }
+        /* HERO QUICK LINKS (Centered) */
+        .hero-quick-links { 
+            margin-top: 2rem; 
+            z-index: 2; 
+            text-align: center; 
+            max-width: 800px; 
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-prompt { font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem; font-weight: 500; letter-spacing: 1px; }
+        
         .btn-quick-kw { 
-            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); 
-            color: white; margin: 0 5px 10px 5px; border-radius: 50px; padding: 8px 20px; 
-            backdrop-filter: blur(5px); transition: all 0.2s; font-size: 1rem;
+            background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.6); 
+            color: white; margin: 0 8px 12px 8px; border-radius: 50px; 
+            padding: 12px 30px; backdrop-filter: blur(5px); 
+            transition: all 0.2s; font-size: 1.2rem; font-weight: bold; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .btn-quick-kw:hover { background: white; color: var(--primary-color); transform: translateY(-2px); }
+        .btn-quick-kw:hover { background: white; color: var(--primary-color); transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        
         .btn-full-budget { 
-            background: white; color: var(--primary-color); font-weight: bold;
-            margin: 0 5px 10px 5px; border-radius: 50px; padding: 8px 25px; border: none;
-            transition: all 0.2s;
+            background: var(--accent-color); color: white; font-weight: bold; 
+            margin-top: 20px; border-radius: 50px; padding: 10px 35px; border: none; 
+            transition: all 0.2s; font-size: 1.1rem; 
         }
-        .btn-full-budget:hover { background: #ecf0f1; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-full-budget:hover { background: #c0392b; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        /* Card Styles */
+        /* COMPONENTS */
         .category-card { cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; border: none; border-radius: 16px; overflow: hidden; height: 100%; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .category-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .category-header { height: 140px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; font-weight: bold; position: relative; }
         .cat-icon { font-size: 3rem; margin-bottom: 0.5rem; display: block; text-align: center; }
 
-        /* Back Button */
         .btn-back { border: 1px solid #ced4da; color: #6c757d; background: white; font-size: 0.9rem; padding: 6px 16px; transition: all 0.2s; }
         .btn-back:hover { background-color: #e9ecef; color: #333; border-color: #adb5bd; }
 
-        /* Keyword Buttons */
         .keyword-btn { margin: 6px; border-radius: 20px; font-size: 1.1rem; padding: 10px 20px; border: 1px solid #dee2e6; color: #555; background: white; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); white-space: normal; max-width: 320px; text-align: left; display: inline-flex; align-items: center; }
         .keyword-btn:hover { border-color: var(--primary-color); color: var(--primary-color); background: #f8f9fa; transform: translateY(-3px); box-shadow: 0 5px 10px rgba(0,0,0,0.15); }
 
-        /* Plan Block */
         .plan-block { cursor: pointer; transition: all 0.2s; border: 1px solid #e0e0e0; border-left: 4px solid transparent; position: relative; }
         .plan-block:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.08) !important; border-left-color: var(--accent-color); }
         .plan-amount { font-family: 'Courier New', monospace; font-weight: bold; color: var(--accent-color); font-size: 1.4rem; }
         .tag-agency { display: inline-block; background-color: #6c757d; color: white; font-size: 0.8rem; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
         .tag-status { display: inline-block; background-color: #17a2b8; color: white; font-size: 0.8rem; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
 
-        /* Step Sections */
         .step-section { display: none; padding-top: 2rem; padding-bottom: 3rem; animation: fadeIn 0.6s ease-out; }
         .step-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* STEP 4 (Former Modal) STYLES */
+        /* STEP 4 & MODAL */
         .detail-page-card { background: white; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.08); padding: 40px; }
-        .detail-agency-tag { background-color: #95a5a6; color: white; padding: 6px 12px; font-size: 1rem; border-radius: 4px; margin-bottom: 1rem; display: inline-block; }
-        .detail-plan-title { font-weight: 800; font-size: 2.2rem; color: #2c3e50; line-height: 1.3; margin-bottom: 1rem; }
-        .detail-total-amount { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.8rem; color: #2c3e50; }
+        .detail-agency-tag, .modal-agency-tag { background-color: #95a5a6; color: white; padding: 6px 12px; font-size: 1rem; border-radius: 4px; margin-bottom: 1rem; display: inline-block; }
+        .detail-plan-title, .modal-plan-title { font-weight: 800; font-size: 2.2rem; color: #2c3e50; line-height: 1.3; margin-bottom: 1rem; }
+        .detail-total-amount, .modal-total-amount { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.8rem; color: #2c3e50; }
 
         .outcome-container { position: relative; background-color: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 30px; border-left: 5px solid #ced4da; }
         .outcome-text { margin-bottom: 0; color: #555; line-height: 1.7; white-space: pre-line; overflow: hidden; transition: max-height 0.3s ease-out; }
@@ -130,7 +149,6 @@
         .table-custom td { font-size: 1rem; padding: 12px; }
 
         .general-cut-alert { background-color: #ffe6e6; border-left: 5px solid var(--color-cut); padding: 15px; color: #c0392b; font-weight: bold; margin-top: 20px; border-radius: 6px; font-size: 1.1rem; }
-
         .legis-label { font-size: 0.9rem; color: #7f8c8d; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
         .legis-tag { display: inline-block; padding: 6px 12px; border-radius: 4px; font-size: 0.95rem; margin-right: 8px; margin-bottom: 8px; border: 1px solid; }
         .legis-tag.cut { border-color: var(--color-cut); color: var(--color-cut); background: #fff5f5; }
@@ -138,7 +156,6 @@
         .legend-row { display: flex; justify-content: center; gap: 15px; font-size: 0.9rem; color: #666; margin-bottom: 15px; }
         .legend-dot { width: 12px; height: 12px; display: inline-block; margin-right: 5px; border-radius: 2px; }
 
-        /* Step 4 Footer Recommendations */
         .step4-footer { border-top: 1px solid #dee2e6; margin-top: 3rem; padding-top: 2rem; text-align: center; }
         .step4-footer h5 { margin-bottom: 1.5rem; color: #6c757d; font-weight: bold; }
         
@@ -154,7 +171,7 @@
 
     <header class="site-header">
         <div class="container">
-            <a href="#" class="site-brand" onclick="goToStep(0)">
+            <a onclick="goToStep(0)" class="site-brand">
                 <span style="font-size: 1.5rem; margin-right: 10px;">📊</span> 預算審查觀測站
             </a>
         </div>
@@ -169,8 +186,9 @@
                 <p class="fs-4 mb-3 opacity-75">中央政府歲出規模約 3 兆元。<br>您的納稅錢如何分配？審查過程刪了多少？</p>
                 
                 <div class="hero-quick-links">
-                    <div id="hero-random-keywords" class="d-flex justify-content-center flex-wrap mb-3"></div>
-                    <button class="btn btn-full-budget" onclick="goToStep(1)">看完整預算 →</button>
+                    <p class="hero-prompt">你可以選擇你關心的議題，或直接看完整的預算→</p>
+                    <div id="hero-random-keywords" class="d-flex justify-content-center flex-wrap mb-2"></div>
+                    <button class="btn btn-full-budget" onclick="goToStep(1)">看完整預算</button>
                 </div>
             </div>
         </section>
@@ -182,7 +200,7 @@
 
             <section id="step-1" class="step-section">
                 <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="goToStep(0)">← 回首頁</button>
+                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回首頁</button>
                 </div>
                 <div class="text-start mb-5">
                     <h2 class="display-6 fw-bold mb-2">請選擇支出類別</h2>
@@ -192,7 +210,7 @@
 
             <section id="step-2" class="step-section">
                 <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="goToStep(1)">← 回上一頁</button>
+                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
                 </div>
                 <div class="text-start mb-4">
                     <h2 class="mb-1">選擇關鍵字...</h2>
@@ -208,7 +226,7 @@
 
             <section id="step-3" class="step-section">
                 <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="goToStep(2)">← 回上一頁</button>
+                    <button id="btn-back-step3" class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
                 </div>
                 <div class="text-start mb-4">
                     <h2 class="mb-1">關鍵字：「<span id="list-view-title" class="text-primary fw-bold"></span>」</h2>
@@ -219,7 +237,7 @@
 
             <section id="step-4" class="step-section">
                 <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="goToStep(3)">← 回上一頁</button>
+                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
                 </div>
 
                 <div class="detail-page-card">
@@ -300,48 +318,48 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const PROXY_URL = 'https://corsproxy.io/?';
-        const TARGET_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS6ZFEMdgBFyC6O0Axmx7TvcckTzMoDCxrb5V_8gHJmyzBEXx-cLj6RtRWkyUUap-qiK_C2G-GwJFMJ/pub?gid=1922321201&single=true&output=csv'; // 您的 Google Sheet CSV 連結
+        const TARGET_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS6ZFEMdgBFyC6O0Axmx7TvcckTzMoDCxrb5V_8gHJmyzBEXx-cLj6RtRWkyUUap-qiK_C2G-GwJFMJ/pub?gid=1922321201&single=true&output=csv';
 
         const CATEGORY_CONFIG = {
             "state": { name: "國務支出", icon: "🏛️", color: "#2c3e50", desc: "總統行使職權、國家安全會議運作。", total: "約 14 億元" },
             "admin": { name: "行政支出", icon: "💼", color: "#2980b9", desc: "行政院及幕僚機關運作與政策規劃。", total: "約 69 億元" },
             "legislative": { name: "立法支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 39 億元" },
-		"judiciary": { name: "司法支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 812 億元" },
-		"exam": { name: "考試支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 26 億元" },
-		"control": { name: "監察支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 30 億元" },
-		"civil": { name: "民政支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 726 億元" },
-		"police": { name: "警政支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 357 億元" },
-		"foreign": { name: "外交支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 415 億元" },
-		"finance": { name: "財務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 510 億元" },
-		"overseas": { name: "僑務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 26 億元" },
-		"defence": { name: "國防支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 5488 億元" },
-		"education": { name: "教育支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 3237 億元" },
-		"science": { name: "科學支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1817 億元" },
-		"culture": { name: "文化支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 513 億元" },
-		"agriculture": { name: "農業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1669 億元" },
-		"industry": { name: "工業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 522 億元" },
-		"transport": { name: "交通支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1622 億元" },
-		"service": { name: "其他經濟服務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 462 億元" },
-		"insurance": { name: "社會保險支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 6109 億元" },
-		"assistance": { name: "社會救助支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 88 億元" },
-		"welfare": { name: "福利服務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1416 億元" },
-		"employment": { name: "國民就業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 20 億元" },
-		"medical": { name: "醫療保健支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 686 億元" },
-		"environment": { name: "環境保護支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 266 億元" },
-		"pension": { name: "退休撫卹給付支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1841 億元" },
-		"retirement": { name: "退休撫卹業務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 3.3 億元" },
-		"debt": { name: "債務付息支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1059 億元" },
-		"repayment": { name: "還本付息事務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 4.2 億元" },
-		"subsidy": { name: "專案補助支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 303 億元" },
-		"other": { name: "其他支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 81 億元" }
+            "judiciary": { name: "司法支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 812 億元" },
+            "exam": { name: "考試支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 26 億元" },
+            "control": { name: "監察支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 30 億元" },
+            "civil": { name: "民政支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 726 億元" },
+            "police": { name: "警政支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 357 億元" },
+            "foreign": { name: "外交支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 415 億元" },
+            "finance": { name: "財務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 510 億元" },
+            "overseas": { name: "僑務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 26 億元" },
+            "defence": { name: "國防支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 5488 億元" },
+            "education": { name: "教育支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 3237 億元" },
+            "science": { name: "科學支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1817 億元" },
+            "culture": { name: "文化支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 513 億元" },
+            "agriculture": { name: "農業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1669 億元" },
+            "industry": { name: "工業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 522 億元" },
+            "transport": { name: "交通支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1622 億元" },
+            "service": { name: "其他經濟服務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 462 億元" },
+            "insurance": { name: "社會保險支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 6109 億元" },
+            "assistance": { name: "社會救助支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 88 億元" },
+            "welfare": { name: "福利服務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1416 億元" },
+            "employment": { name: "國民就業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 20 億元" },
+            "medical": { name: "醫療保健支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 686 億元" },
+            "environment": { name: "環境保護支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 266 億元" },
+            "pension": { name: "退休撫卹給付支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1841 億元" },
+            "retirement": { name: "退休撫卹業務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 3.3 億元" },
+            "debt": { name: "債務付息支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1059 億元" },
+            "repayment": { name: "還本付息事務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 4.2 億元" },
+            "subsidy": { name: "專案補助支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 303 億元" },
+            "other": { name: "其他支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 81 億元" }
         };
-
 
         const CHART_COLORS = ['#3498db', '#e74c3c', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e', '#e67e22'];
 
         let groupedData = {};
-        let allKeywords = []; // 用於隨機抽選
-        let breadcrumbState = { categoryName: '', keywordName: '' };
+        let allKeywords = [];
+        let historyStack = [];
+        let currentView = { step: 0 };
 
         document.addEventListener('DOMContentLoaded', () => {
             initApp();
@@ -355,7 +373,7 @@
                     complete: function(results) {
                         processData(results.data);
                         renderCategories();
-                        renderRandomKeywords('hero-random-keywords'); // 首頁隨機
+                        renderRandomKeywords('hero-random-keywords');
                         finishLoading();
                     },
                     error: function(err) {
@@ -376,30 +394,7 @@
 
         function useDemoData() {
             const demoRows = [
-                { 
-                    category: 'state', title: '機關基本運作', agency: '總統府', amount: '10.8 億元', 
-                    details: '古蹟修繕;資安維護', review_status: '照案通過',
-                    outcome: '本計畫旨在維護總統府古蹟建物安全，並提升資安防護能力。預期透過古蹟修繕工程，延長建物使用年限；同時更新資安設備，防範網路攻擊。\n(此為範例文字，若文字較長會自動折疊)',
-                    sub_breakdown: '人員維持:700000000; 古蹟修繕:30000000; 水電費:350000000',
-                    cut_frozen_val: '1000000, 2000000', 
-                    review_stats: '100,50; 80,50; 80,50', 
-                    details_table: '水電費|刪減100萬，理由：節能不足; 辦公費|凍結200萬，理由：待報告',
-                    general_cut: '所屬機關 總統府 遭統刪 100 萬元',
-                    legis_cut: '王大明, 陳小華',
-                    legis_freeze: '李四, 張三'
-                },
-                { 
-                    category: 'admin', title: '打詐專案', agency: '行政院', amount: '1.2 億元', 
-                    details: '打詐平台', review_status: '減列',
-                    outcome: '建立跨部會打詐通報平台，整合警政、金融及電信數據。預期能縮短詐欺案件偵辦時間，並提升攔阻率達 30%。',
-                    sub_breakdown: '平台建置:80000000; 情資分析:40000000',
-                    cut_frozen_val: '5000000, 10000000',
-                    review_stats: '200,100; 100,100; 50,100', 
-                    details_table: '平台建置|刪減500萬，成效不清; 宣導費|凍結1000萬',
-                    general_cut: '',
-                    legis_cut: '林林林',
-                    legis_freeze: '黃黃黃'
-                }
+                { category: 'state', title: '機關基本運作', agency: '總統府', amount: '10.8 億元', details: '古蹟修繕;資安維護', review_status: '照案通過', sub_breakdown: '人員:700000; 古蹟:300000', cut_frozen_val: '100, 200', review_stats: '100,50; 80,50; 80,50', details_table: '水電|刪100', general_cut: '', legis_cut: '王大明', legis_freeze: '李四' }
             ];
             processData(demoRows);
             renderCategories();
@@ -409,7 +404,7 @@
 
         function processData(rows) {
             groupedData = {};
-            allKeywords = []; // Reset
+            allKeywords = [];
             for (let key in CATEGORY_CONFIG) groupedData[key] = {};
 
             rows.forEach(row => {
@@ -435,7 +430,6 @@
                     const keyword = d.trim();
                     if (!keyword) return;
 
-                    // 收集所有關鍵字用於隨機
                     if (!allKeywords.includes(keyword)) allKeywords.push(keyword);
 
                     if (!groupedData[row.category][keyword]) groupedData[row.category][keyword] = [];
@@ -461,105 +455,109 @@
             });
         }
 
-        // 隨機選取 3 個關鍵字並渲染
-        function renderRandomKeywords(containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            
-            if (allKeywords.length === 0) return;
-
-            // 洗牌
-            const shuffled = allKeywords.sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 3);
-
-            selected.forEach(kw => {
-                const btn = document.createElement('button');
-                btn.className = 'btn-quick-kw'; // Hero Style by default
-                
-                // 如果是在 Step 4，樣式要調整
-                if(containerId === 'step4-random-keywords') {
-                    btn.className = 'btn btn-outline-secondary rounded-pill me-2 mb-2';
-                }
-                
-                btn.innerText = kw;
-                
-                // 找出這個關鍵字屬於哪個類別 (需要搜尋 groupedData)
-                let targetCategory = '';
-                let targetPlans = [];
-                
-                for(let cat in groupedData) {
-                    if(groupedData[cat][kw]) {
-                        targetCategory = cat;
-                        targetPlans = groupedData[cat][kw];
-                        break;
-                    }
-                }
-
-                btn.onclick = () => {
-                    // 設定狀態以便麵包屑正確顯示 (雖然從首頁跳進去可能麵包屑會缺一層，但這是捷徑)
-                    breadcrumbState.categoryName = CATEGORY_CONFIG[targetCategory] ? CATEGORY_CONFIG[targetCategory].name : '精選';
-                    renderStep3List(kw, targetPlans);
-                };
-                container.appendChild(btn);
-            });
-        }
-
-        function renderCategories() {
-            const container = document.getElementById('category-container');
-            container.innerHTML = '';
-            for (const [key, config] of Object.entries(CATEGORY_CONFIG)) {
-                const col = document.createElement('div');
-                col.className = 'col-md-4 col-12';
-                col.innerHTML = `
-                    <div class="card category-card">
-                        <div class="category-header" style="background-color: ${config.color};">
-                            <div><div class="cat-icon">${config.icon}</div>${config.name}</div>
-                        </div>
-                        <div class="card-body p-4">
-                            <p class="card-text text-muted">${config.desc}</p>
-                            <hr>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">總預算</small>
-                                <span class="fw-bold text-dark">${config.total}</span>
-                            </div>
-                        </div>
-                    </div>`;
-                col.querySelector('.category-card').onclick = () => selectCategory(key);
-                container.appendChild(col);
+        function getCategoryForKeyword(kw) {
+            for(let cat in groupedData) {
+                if(groupedData[cat][kw]) return cat;
             }
+            return null;
         }
 
-        function selectCategory(catKey) {
-            const categoryData = groupedData[catKey]; 
-            const config = CATEGORY_CONFIG[catKey] || { name: catKey };
-            if (!categoryData || Object.keys(categoryData).length === 0) {
-                alert(`「${config.name}」目前沒有相關資料`);
+        function pushHistory() {
+            historyStack.push(JSON.parse(JSON.stringify(currentView)));
+        }
+
+        function handleGlobalBack() {
+            if (historyStack.length === 0) {
+                goToStep(0, false);
                 return;
             }
+            const prevState = historyStack.pop();
+            restoreState(prevState);
+        }
+
+        function restoreState(state) {
+            currentView = state;
             
-            breadcrumbState.categoryName = config.name;
+            if (state.step === 0) {
+                goToStep(0, false);
+            } else if (state.step === 1) {
+                goToStep(1, false);
+            } else if (state.step === 2) {
+                selectCategory(state.catKey, false);
+            } else if (state.step === 3) {
+                const plans = groupedData[state.catKey][state.kw];
+                renderStep3List(state.kw, plans, false, state.catKey); // Pass explicit catKey
+            } else if (state.step === 4) {
+                renderStep4(state.plan, false);
+            }
+        }
+
+        function goToStep(step, isPush = true) {
+            if(isPush) {
+                if(document.querySelector('.step-section.active')) {
+                    pushHistory();
+                }
+            }
+            
+            currentView = { step: step };
+
+            document.querySelectorAll('.step-section').forEach(el => {
+                el.classList.remove('active');
+                setTimeout(() => { if(!el.classList.contains('active')) el.style.display = 'none'; }, 500);
+            });
+            const target = document.getElementById(`step-${step}`);
+            if(target) {
+                target.style.display = 'block';
+                setTimeout(() => target.classList.add('active'), 10);
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+            updateBreadcrumbs();
+        }
+
+        function selectCategory(catKey, isPush = true) {
+            if (!groupedData[catKey]) { alert("無此類別資料"); return; }
+            
+            if(isPush) pushHistory();
+
+            currentView = { step: 2, catKey: catKey };
+
+            const config = CATEGORY_CONFIG[catKey];
             document.getElementById('selected-category-name').innerText = config.name;
             
             const container = document.getElementById('keywords-container');
             container.innerHTML = ''; 
-            Object.keys(categoryData).forEach(keyword => {
-                const plans = categoryData[keyword];
+            Object.keys(groupedData[catKey]).forEach(keyword => {
+                const plans = groupedData[catKey][keyword];
                 const count = plans.length;
                 const btn = document.createElement('button');
                 btn.className = `btn keyword-btn`;
                 let html = `${keyword} <span class="badge bg-warning text-dark ms-1 rounded-pill">${count}</span>`;
                 btn.innerHTML = html;
-                btn.onclick = () => renderStep3List(keyword, plans);
+                btn.onclick = () => renderStep3List(keyword, plans, true, catKey);
                 container.appendChild(btn);
             });
-            goToStep(2);
+
+            switchSection(2);
+            updateBreadcrumbs();
         }
 
-        function renderStep3List(keyword, plans) {
-            breadcrumbState.keywordName = keyword;
+        // ★★★ Fixed: Added explicitCatKey param ★★★
+        function renderStep3List(keyword, plans, isPush = true, explicitCatKey = null) {
+            if(isPush) pushHistory();
+
+            let catKey = explicitCatKey || currentView.catKey;
+            if(!catKey) {
+                catKey = getCategoryForKeyword(keyword);
+            }
+
+            currentView = { step: 3, catKey: catKey, kw: keyword };
+
             document.getElementById('list-view-title').innerText = keyword;
             document.getElementById('list-count').innerText = plans.length;
             
+            const backBtn = document.getElementById('btn-back-step3');
+            backBtn.innerText = '← 回上一頁';
+
             const container = document.getElementById('plan-list-container');
             container.innerHTML = '';
 
@@ -601,21 +599,28 @@
                         </div>
                     </div>
                 `;
-                // 改為進入 Step 4 (Page)
                 col.querySelector('.plan-block').onclick = () => renderStep4(plan);
                 container.appendChild(col);
             });
-            goToStep(3);
+
+            switchSection(3);
+            updateBreadcrumbs();
         }
 
-        // STEP 4: Detail Page Renderer
-        function renderStep4(plan) {
-            // Populate Data
+        function renderStep4(plan, isPush = true) {
+            if(isPush) pushHistory();
+
+            currentView = { 
+                step: 4, 
+                catKey: currentView.catKey,
+                kw: currentView.kw, 
+                plan: plan 
+            };
+
             document.getElementById('d-agency').innerText = plan.agency;
             document.getElementById('d-title').innerText = plan.title;
             document.getElementById('d-amount').innerText = plan.amount;
 
-            // Outcome
             const outcomeText = document.getElementById('d-outcome-text');
             const outcomeToggle = document.getElementById('d-outcome-toggle');
             outcomeText.classList.remove('expanded');
@@ -636,7 +641,6 @@
                 outcomeText.classList.remove('collapsed');
             }
 
-            // Horizontal Bar
             const cfVals = plan.cutFrozenVal.split(/[,，]/).map(s => parseInt(s.trim()) || 0);
             const cutVal = cfVals[0] || 0;
             const freezeVal = cfVals[1] || 0;
@@ -656,7 +660,6 @@
                 <div class="status-seg cut" style="width: ${cutPct}%">${cutPct > 5 ? '刪'+cutPct.toFixed(1)+'%' : ''}</div>
             `;
 
-            // Vertical Chart
             const stages = plan.reviewStats.split(/[;；]/);
             const stageNames = ['委員會', '黨團協商', '院會'];
             const chartWrapper = document.getElementById('d-chart-wrapper');
@@ -686,7 +689,6 @@
                 chartWrapper.appendChild(col);
             });
 
-            // Table
             const tbody = document.getElementById('d-details-table-body');
             tbody.innerHTML = '';
             const detailRows = plan.detailsTable.split(/[;；]/);
@@ -698,7 +700,6 @@
                 tbody.appendChild(tr);
             });
 
-            // General Cut
             const genCutDiv = document.getElementById('d-general-cut');
             if(plan.generalCut) {
                 genCutDiv.innerText = plan.generalCut;
@@ -707,7 +708,6 @@
                 genCutDiv.classList.add('d-none');
             }
 
-            // Legislators
             const renderTags = (containerId, str, cssClass) => {
                 const container = document.getElementById(containerId);
                 container.innerHTML = '';
@@ -724,10 +724,74 @@
             renderTags('d-legis-cut', plan.legisCut, 'cut');
             renderTags('d-legis-freeze', plan.legisFreeze, 'freeze');
 
-            // ★ Render Footer Random Keywords ★
             renderRandomKeywords('step4-random-keywords');
 
-            goToStep(4);
+            switchSection(4);
+            updateBreadcrumbs();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('category-container');
+            container.innerHTML = '';
+            for (const [key, config] of Object.entries(CATEGORY_CONFIG)) {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 col-12';
+                col.innerHTML = `
+                    <div class="card category-card">
+                        <div class="category-header" style="background-color: ${config.color};">
+                            <div><div class="cat-icon">${config.icon}</div>${config.name}</div>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="card-text text-muted">${config.desc}</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">總預算</small>
+                                <span class="fw-bold text-dark">${config.total}</span>
+                            </div>
+                        </div>
+                    </div>`;
+                col.querySelector('.category-card').onclick = () => selectCategory(key);
+                container.appendChild(col);
+            }
+        }
+
+        function renderRandomKeywords(containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            if (allKeywords.length === 0) return;
+            const shuffled = allKeywords.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 3);
+            selected.forEach(kw => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-quick-kw'; 
+                if(containerId === 'step4-random-keywords') {
+                    btn.className = 'btn btn-outline-secondary rounded-pill me-2 mb-2';
+                }
+                btn.innerText = kw;
+                
+                const targetCat = getCategoryForKeyword(kw);
+                btn.onclick = () => {
+                    if (targetCat) {
+                        // ★★★ Fix: Pass targetCat explicitly ★★★
+                        const targetPlans = groupedData[targetCat][kw];
+                        renderStep3List(kw, targetPlans, true, targetCat); 
+                    } else { alert("無法找到此關鍵字"); }
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function switchSection(stepNum) {
+            document.querySelectorAll('.step-section').forEach(el => {
+                el.classList.remove('active');
+                setTimeout(() => { if(!el.classList.contains('active')) el.style.display = 'none'; }, 500);
+            });
+            const target = document.getElementById(`step-${stepNum}`);
+            if(target) {
+                target.style.display = 'block';
+                setTimeout(() => target.classList.add('active'), 10);
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
         }
 
         function toggleOutcome() {
@@ -744,63 +808,56 @@
             }
         }
 
-        function updateBreadcrumbs(step) {
+        function updateBreadcrumbs() {
             const nav = document.getElementById('breadcrumb-nav');
             const list = document.getElementById('breadcrumb-list');
             list.innerHTML = '';
 
-            if(step === 0) { nav.style.display = 'none'; return; }
+            if(currentView.step === 0) { nav.style.display = 'none'; return; }
             nav.style.display = 'block';
 
             let homeLi = document.createElement('li');
             homeLi.className = 'breadcrumb-item';
-            homeLi.innerHTML = '<a href="#" onclick="goToStep(0)">首頁</a>';
+            homeLi.innerHTML = '<a onclick="goToStep(0)">首頁</a>';
             list.appendChild(homeLi);
 
-            if(step >= 1) {
+            if(currentView.step >= 1) {
                 let catLi = document.createElement('li');
                 catLi.className = 'breadcrumb-item';
-                if(step === 1) { catLi.classList.add('active'); catLi.innerText = '選擇類別'; }
-                else { catLi.innerHTML = `<a href="#" onclick="goToStep(1)">${breadcrumbState.categoryName || '類別'}</a>`; }
+                if(currentView.step === 1) { catLi.classList.add('active'); catLi.innerText = '選擇類別'; }
+                else { 
+                    const catName = (currentView.catKey && CATEGORY_CONFIG[currentView.catKey]) ? CATEGORY_CONFIG[currentView.catKey].name : '類別';
+                    catLi.innerHTML = `<a onclick="goToStep(1)">${catName}</a>`; 
+                }
                 list.appendChild(catLi);
             }
 
-            if(step >= 2) {
+            if(currentView.step >= 2) {
                 let kwLi = document.createElement('li');
                 kwLi.className = 'breadcrumb-item';
-                if(step === 2) { kwLi.classList.add('active'); kwLi.innerText = '選擇關鍵字'; }
-                else { kwLi.innerHTML = `<a href="#" onclick="goToStep(2)">${breadcrumbState.keywordName || '關鍵字'}</a>`; }
+                if(currentView.step === 2) { kwLi.classList.add('active'); kwLi.innerText = '選擇關鍵字'; }
+                else { 
+                    kwLi.innerHTML = `<a onclick="selectCategory('${currentView.catKey}')">${currentView.kw || '關鍵字'}</a>`; 
+                }
                 list.appendChild(kwLi);
             }
 
-            if(step >= 3) {
+            if(currentView.step >= 3) {
                 let listLi = document.createElement('li');
                 listLi.className = 'breadcrumb-item';
-                if(step === 3) { listLi.classList.add('active'); listLi.innerText = '計畫清單'; }
-                else { listLi.innerHTML = `<a href="#" onclick="goToStep(3)">計畫清單</a>`; }
+                if(currentView.step === 3) { listLi.classList.add('active'); listLi.innerText = '計畫清單'; }
+                else { 
+                    listLi.innerHTML = `<a onclick="renderStep3List('${currentView.kw}', groupedData['${currentView.catKey}']['${currentView.kw}'], true, '${currentView.catKey}')">計畫清單</a>`;
+                }
                 list.appendChild(listLi);
             }
 
-            if(step === 4) {
+            if(currentView.step === 4) {
                 let detailLi = document.createElement('li');
                 detailLi.className = 'breadcrumb-item active';
                 detailLi.innerText = '詳細內容';
                 list.appendChild(detailLi);
             }
-        }
-
-        function goToStep(step) {
-            document.querySelectorAll('.step-section').forEach(el => {
-                el.classList.remove('active');
-                setTimeout(() => { if(!el.classList.contains('active')) el.style.display = 'none'; }, 500);
-            });
-            const target = document.getElementById(`step-${step}`);
-            if(target) {
-                target.style.display = 'block';
-                setTimeout(() => target.classList.add('active'), 10);
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            }
-            updateBreadcrumbs(step);
         }
     </script>
 </body>
