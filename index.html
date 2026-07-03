@@ -1,902 +1,2838 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>預算審查觀測站 - 115年度總預算</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
+    <title>總預算卡關 203 天 — 115年度中央政府總預算審議回顧</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
     <style>
+        /* --- 核心視覺規範 (CNA 數位敘事風格) --- */
+        /* --- 核心視覺規範 (CNA 數位敘事風格) --- */
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --accent-color: #e74c3c;
-            --bg-light: #f8f9fa;
-            
-            /* 狀態顏色 */
-            --color-remain: #2ecc71;
-            --color-freeze: #f1c40f;
-            --color-cut: #e74c3c;
+            --bg-deep: #FFFFFF;
+            /* 改為純白底色 */
+            --bg-card: rgba(245, 247, 250, 0.9);
+            /* 改為極淺灰藍半透明卡片 */
+            --text-main: #1a1a1a;
+            /* 改為主要文字深灰色 */
+            --text-muted: #64748b;
+            /* 改為次要文字中灰色 */
+            --primary: #008080;
+            /* 改為主要藍綠色 (Teal) */
+            --accent: #00a896;
+            /* 改為點綴藍綠色 (Light Teal) */
+            --danger: #E74C3C;
+            /* 警示紅維持，以利表現卡關與法定時限 */
+            --border: rgba(0, 128, 128, 0.15);
+            /* 改為藍綠色調的淡邊框 */
+            --bg-chart: #f8fafc;
+            /* 改為淺色圖表底色 */
         }
-        
-        html, body { height: 100%; margin: 0; }
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); color: #333; display: flex; flex-direction: column; }
-        main { flex: 1; }
-        h1, h2, h3, h5, .serif-font { font-family: 'Noto Serif TC', serif; }
 
-        /* HEADER */
-        .site-header { background-color: var(--primary-color); padding: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .site-brand { color: white; font-size: 1.5rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; cursor: pointer; }
-        .site-brand:hover { color: #ecf0f1; }
-
-        /* BREADCRUMB */
-        .custom-breadcrumb { background: transparent; padding: 0; margin-bottom: 1rem; font-size: 0.85rem; }
-        .breadcrumb-item a { color: #6c757d; text-decoration: none; cursor: pointer; transition: color 0.2s; }
-        .breadcrumb-item a:hover { color: var(--primary-color); text-decoration: underline; }
-        .breadcrumb-item.active { color: #adb5bd; }
-        .breadcrumb-item + .breadcrumb-item::before { color: #ccc; }
-
-        /* FOOTER */
-        .site-footer { background-color: #212529; color: #adb5bd; padding: 2rem 0; margin-top: auto; font-size: 0.9rem; text-align: center; }
-        .footer-source { color: #6c757d; font-size: 0.8rem; margin-top: 0.5rem; }
-
-        /* HERO (Centered) */
-        .hero-section { 
-            min-height: 85vh; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
-            color: white; 
-            text-align: center; 
-            padding: 2rem; 
-            position: relative; 
-            overflow: hidden; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        .hero-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px; }
-        .hero-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; z-index: 2; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 
-        /* HERO QUICK LINKS (Centered) */
-        .hero-quick-links { 
-            margin-top: 2rem; 
-            z-index: 2; 
-            text-align: center; 
-            max-width: 800px; 
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.75;
+            overflow-x: hidden;
+        }
+
+        /* --- Hero 序章區塊 --- */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            background: linear-gradient(180deg, rgba(245, 247, 250, 0.5) 0%, var(--bg-deep) 90%);
+            /* 改為淺色微漸層 */
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 30px;
+            font-weight: 900;
+        }
+
+        .hero-title span {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            color: var(--primary);
+            /* 原為 var(--accent) 金黃，改為主色藍綠色提升閱讀清晰度 */
+            display: block;
+            margin-top: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--primary), transparent);
+            /* 漸層線條改為藍綠色出發 */
+        }
+
+        .chapter-intro p {
+            font-size: 1.35rem !important;
+            line-height: 2 !important;
+            text-align: center !important;
+            font-weight: 500 !important;
+            color: var(--text-main) !important;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translate(-50%, 0);
+            }
+
+            40% {
+                transform: translate(-50%, -10px);
+            }
+
+            60% {
+                transform: translate(-50%, -5px);
+            }
+        }
+
+        /* =======================================================
+           核心架構：模組化分區 (Section-by-Section)
+           ======================================================= */
+        .chapter-section {
+            position: relative;
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            /* 改為淺色細分界線 */
         }
-        .hero-prompt { font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 1px; }
-        
-        .btn-quick-kw { 
-            background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.6); 
-            color: white; margin: 0 8px 12px 8px; border-radius: 50px; 
-            padding: 12px 30px; backdrop-filter: blur(5px); 
-            transition: all 0.2s; font-size: 1.2rem; font-weight: bold; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+        .local-sticky-stage {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100vh;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            overflow: hidden;
         }
-        .btn-quick-kw:hover { background: white; color: var(--primary-color); transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-        
-        /* Refresh Button Style */
-        .btn-refresh-keywords {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.3);
-            color: rgba(255,255,255,0.7);
-            border-radius: 20px;
-            padding: 4px 12px;
+
+        .local-scroll-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding-left: 55%;
+            padding-right: 5%;
+            margin-top: -100vh;
+            pointer-events: none;
+        }
+
+        .step-scene {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10vh 0;
+            pointer-events: none;
+        }
+
+        .story-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            /* 改為適合白底的輕微陰影 */
+            transition: transform 0.4s, border-color 0.4s;
+            pointer-events: auto;
+        }
+
+        .step-scene.is-active .story-card {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 128, 128, 0.1);
+            /* 激活時的陰影改為淡淡的藍綠色調 */
+        }
+
+        .story-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .story-card p {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--text-main);
+            /* 原為 #E2E8F0 明亮色，改為主要深灰字 */
+            line-height: 1.8;
+        }
+
+        .mobile-timeline-badge {
+            display: none;
+        }
+
+        /* --- 圖表與數據組件 --- */
+        .dynamic-chart-box {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            opacity: 0;
+            visibility: hidden !important;
+            transform: scale(0.95) translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            pointer-events: none;
+        }
+
+        .is-active-chapter .dynamic-chart-box.visible-box {
+            opacity: 1;
+            visibility: visible !important;
+            transform: scale(1) translateY(0);
+            pointer-events: auto !important;
+        }
+
+        /* =======================================================
+           第一章：全新置中交叉時間軸
+           ======================================================= */
+        .center-timeline-container {
+            position: relative;
+            max-width: 1100px;
+            margin: 40px auto 100px auto;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            /* 控置上下元件之間的間距 */
+        }
+
+        /* 置中貫穿垂直主線 */
+        .center-main-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: rgba(0, 128, 128, 0.15);
+            /* 淡淡的藍綠色主軸 */
+            transform: translateX(-50%);
+            z-index: 1;
+            border-radius: 2px;
+        }
+
+        /* 時間軸的每一行共通設定 */
+        .timeline-row {
+            position: relative;
+            width: 100%;
+            display: flex;
+            z-index: 2;
+        }
+
+        /* 項目 A：時間軸節點 Block (電腦版強制置中) */
+        .timeline-row.item-node {
+            justify-content: center;
+        }
+
+        .timeline-block-node {
+            background: #f0fdfa;
+            /* 明亮微藍綠色底 */
+            border: 2px solid var(--primary);
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 320px;
+            box-shadow: 0 4px 12px rgba(0, 128, 128, 0.05);
+        }
+
+        .timeline-block-node .node-date {
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-weight: 900;
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-block-node p {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* 節點特殊狀態變色 */
+        .timeline-block-node.node-danger {
+            border-color: var(--danger);
+            background: #fff5f5;
+        }
+
+        .timeline-block-node.node-danger .node-date {
+            color: var(--danger);
+        }
+
+        .timeline-block-node.node-warning {
+            border-color: var(--accent);
+            background: #fffbeb;
+        }
+
+        .timeline-block-node.node-warning .node-date {
+            color: var(--accent);
+        }
+
+        .timeline-block-node.node-success {
+            border-color: #2ea85c;
+            background: #f0fdf4;
+        }
+
+        .timeline-block-node.node-success .node-date {
+            color: #2ea85c;
+        }
+
+        /* 項目 B：故事卡片 Block (電腦版左右交錯) */
+        .timeline-row.item-card {
+            width: 50%;
+        }
+
+        /* 左側卡片：排在左邊、內容靠右對齊中央線 */
+        .timeline-row.item-card.left-side {
+            align-self: flex-start;
+            justify-content: flex-end;
+            padding-right: 40px;
+            /* 與中央線保持呼吸間距 */
+        }
+
+        /* 右側卡片：排在右邊、內容靠左對齊中央線 */
+        .timeline-row.item-card.right-side {
+            align-self: flex-end;
+            justify-content: flex-start;
+            padding-left: 40px;
+            /* 與中央線保持呼吸間距 */
+        }
+
+        /* 強制重置故事卡片在置中佈局時的互動指針效果（因為原本是寫在隨捲動觸發的 class 上） */
+        .timeline-row.item-card .story-card {
+            pointer-events: auto !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .timeline-row.item-card:hover .story-card {
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(0, 128, 128, 0.08);
+        }
+
+        /* =======================================================
+           第一章：手機與平板 RWD 自動調適成單欄
+           ======================================================= */
+        @media (max-width: 968px) {
+            .center-timeline-container {
+                padding: 20px 3%;
+                /* 縮減兩側內襯，給卡片更多伸展空間 */
+                gap: 25px;
+                /* 微調手機版上下間距 */
+            }
+
+            /* 修正：主線在手機版強制維持在正中間 */
+            .center-main-line {
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+            }
+
+            /* 修正：所有行在手機版取消左右分邊，全部強制佔滿 100% 且內容置中 */
+            .timeline-row.item-node,
+            .timeline-row.item-card.left-side,
+            .timeline-row.item-card.right-side {
+                width: 100% !important;
+                align-self: center !important;
+                justify-content: center !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            .timeline-block-node {
+                text-align: center !important;
+                width: 85%;
+                /* 讓它比故事卡片稍微縮窄，凸顯層次 */
+                max-width: 280px;
+            }
+
+            /* 修正：故事卡片在手機版橫跨軸線置中，寬度拉寬確保文字好讀 */
+            .timeline-row.item-card .story-card {
+                width: 92%;
+                max-width: 480px;
+                padding: 24px 20px;
+                /* 微調手機版卡片內距 */
+            }
+        }
+
+        /* =======================================================
+           🚀 全新第二章：重構滿版視差生長控制樣式
+           ======================================================= */
+        #chapter-2-rebuilt {
+            position: relative !important;
+            width: 100% !important;
+            min-height: 850vh !important;
+            /* 物理總長跑道 */
+            background-color: var(--bg-deep) !important;
+        }
+
+        .gantt-fixed-stage-rebuilt {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+
+        /* 當進入第二章範圍時，強制讓 fixed 舞台顯影 */
+        .stage-active-rebuilt-now {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .gantt-backdrop-box-rebuilt {
+            position: absolute !important;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.98);
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+        }
+
+        .box-visible-rebuilt-now {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: scale(1) !important;
+            pointer-events: auto !important;
+        }
+
+        .gantt-scroll-content-rebuilt {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gantt-card-rebuilt {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        /* 甘特圖容器 */
+        .gantt-chart-container-rebuilt {
+            position: relative !important;
+            width: 100%;
+            max-width: 920px;
+            height: 78vh;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 30px 60px 80px;
+            /* 給左邊 Y 軸和下面 X 軸留呼吸空間 */
+            border-radius: 12px;
+            border: 1px solid transparent !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            transition: all 0.5s ease !important;
+        }
+
+        /* 🔓 階梯 2：浮現框線、底色與陰影 */
+        .rebuilt-step-2 {
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            background: #f8fafc !important;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.02) !important;
+        }
+
+        /* 2. 🎛️ 甘特圖大外殼：頂部 padding 縮小，高度稍微微調 */
+        .gantt-chart-container-rebuilt {
+            position: relative !important;
+            width: 100%;
+            max-width: 960px;
+            height: 85vh;
+            /* 💡 修正：撐高圖表實體高度 */
+            display: flex;
+            flex-direction: column;
+            /* 💡 修正：頂部縮小到 20px，底部留出 100px 的巨大操場給 X 軸 */
+            padding: 20px 30px 100px 80px;
+            border-radius: 12px;
+            border: 1px solid transparent !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            transition: all 0.5s ease !important;
+        }
+
+        .rebuilt-step-2 .gantt-chart-container-rebuilt {
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+            background: rgba(248, 250, 252, 0.6) !important;
+            /* 💡 修正：更淡更優雅的底色，融入大白底 */
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.02) !important;
+        }
+
+        /* 💡 Y軸 (年份) */
+        .gantt-y-axis-rebuilt {
+            position: absolute;
+            left: 15px;
+            top: 20px;
+            bottom: 100px;
+            /* 💡 修正：底部拉高到 100px，年份間距被均勻拉開了！ */
+            width: 65px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .rebuilt-step-2 .gantt-y-axis-rebuilt {
+            opacity: 1;
+        }
+
+        .y-tick {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            height: 18px;
+        }
+
+        .gantt-year-rebuilt {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .tick-line-y {
+            width: 6px;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* 💡 X軸 (月份) */
+        .gantt-x-axis-rebuilt {
+            position: absolute;
+            left: 80px;
+            right: 30px;
+            bottom: 45px;
+            /* 💡 修正：下沉到 45px，與圖表底部空出 55px 的乾淨呼吸帶 */
+            height: 35px;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .rebuilt-step-2 .gantt-x-axis-rebuilt {
+            opacity: 1;
+        }
+
+        .gantt-x-axis-rebuilt .tick {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateX(-50%);
+        }
+
+        .tick-line {
+            width: 1px;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-bottom: 4px;
+        }
+
+        .tick-line-major {
+            width: 2px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            margin-bottom: 4px;
+        }
+
+        .gantt-grid-label-rebuilt {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        /* 💡 內部背景網格線 */
+        .gantt-rows-container-rebuilt {
+            position: absolute;
+            left: 80px;
+            top: 40px;
+            right: 30px;
+            bottom: 80px;
+            /* 💡 修正：彩色 Bar 的容器底部對齊 80px，完美與年份一行行對齊 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .rebuilt-step-2 .gantt-grid-rebuilt {
+            opacity: 1;
+        }
+
+        .gantt-grid-rebuilt {
+            position: absolute;
+            left: 80px;
+            top: 20px;
+            right: 30px;
+            bottom: 100px;
+            /* 💡 修正：網格底部對齊 100px */
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .grid-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            border-left: 1px dashed rgba(0, 0, 0, 0.06);
+        }
+
+        .grid-line-major {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            border-left: 2px dashed rgba(0, 0, 0, 0.12);
+        }
+
+        /* 💡 標題與執政黨圖例 */
+        .gantt-title-area-rebuilt,
+        .gantt-legend-rebuilt {
+            display: none !important;
+        }
+
+        .rebuilt-step-2 .gantt-title-area-rebuilt {
+            opacity: 1;
+        }
+
+        .rebuilt-step-2 .gantt-legend-rebuilt {
+            opacity: 1;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 10px;
+            border-radius: 2px;
+            margin-right: 5px;
+        }
+
+        /* =======================================================
+           紅色虛線專屬舞台：精準錨定 12/16 (35.3%) 
+           ======================================================= */
+        .gantt-red-deadline-stage {
+            position: absolute !important;
+            left: 80px;
+            top: 20px;
+            right: 30px;
+            bottom: 100px;
+            pointer-events: none;
+            z-index: 10;
+            /* 特權最高層級，確保踩在所有人頭頂上 */
+
+            /* 階梯 4 動態控制 */
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: opacity 0.4s ease, visibility 0.4s !important;
+        }
+
+        /* 🔓 階梯 4 激活顯示 */
+        .rebuilt-step-4 .gantt-red-deadline-stage {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* 🔴 紅色實體虛線：雷打不動，精準切在 35.3% 的法定審理時間 */
+        #chapter-2-rebuilt .gantt-red-line-rebuilt {
+            position: absolute !important;
+            left: 35.3% !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 0 !important;
+            height: 100% !important;
+            border-left: 2px dashed var(--danger) !important;
+        }
+
+        /* =======================================================
+           深灰色預算執行區塊：完美對齊 1月1日 (40% 刻度線)
+           ======================================================= */
+        #chapter-2-rebuilt .execution-zone-bg-rebuilt {
+            position: absolute !important;
+            /* 💡 因為家長已經精準對齊網格，這裡寫 left: 40% 就會雷打不動貼齊 1 月線！ */
+            left: 40% !important;
+            right: 0 !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            height: 100% !important;
+            /* 💡 修正：將透明度稍微提高到 0.07，讓深灰色底在白底畫面上更清晰可見 */
+            background-color: rgba(0, 0, 0, 0.07) !important;
+
+            /* 層級設定：確保它在舞台內部的最底層（z-index: 1），這樣才不會遮擋到紅線（z-index: 10） */
+            z-index: 1 !important;
+
+            /* 💡 修正：因為家長（舞台）已經控制了步驟 4 的淡入淡出，這裡直接維持 1 即可 */
+            opacity: 1 !important;
+        }
+
+        /* 🔓 階梯 4 激活顯示深灰底 */
+        .rebuilt-step-4 #chapter-2-rebuilt .execution-zone-bg-rebuilt {
+            opacity: 1 !important;
+        }
+
+        /* 💡 長條圖主體結構 */
+        .gantt-rows-container-rebuilt {
+            position: absolute;
+            left: 80px;
+            top: 20px;
+            right: 30px;
+            bottom: 100px;
+            /* 💡 修正：彩色 Bar 容器底部對齊 100px，高度拉開不貼月份 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .gantt-row-rebuilt {
+            width: 100%;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            filter: none;
+            transition: opacity 0.4s, filter 0.4s, transform 0.4s !important;
+        }
+
+        .gantt-track-rebuilt {
+            position: relative;
+            width: 100%;
+            height: 10px;
+        }
+
+        /* 🔓 階梯 3：沒收 width:0，讓長條圖往右長出 */
+        #chapter-2-rebuilt .gantt-bar-rebuilt {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            border-radius: 2px;
+            width: 0 !important;
+            /* 預設隱形 */
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+
+        .rebuilt-step-3 #chapter-2-rebuilt .gantt-bar-rebuilt {
+            width: var(--w) !important;
+            /* 解鎖生長！ */
+        }
+
+        .party-dpp {
+            background: #2ea85c;
+        }
+
+        .party-kmt {
+            background: #3a86ff;
+        }
+
+        .gantt-bar-115-rebuilt {
+            background: var(--danger);
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.2);
+        }
+
+        /* 🔓 階梯 5：高亮蔡、馬任內順利過關的三個年份 */
+        .rebuilt-step-5 .gantt-row-rebuilt {
+            opacity: 0.15 !important;
+            filter: blur(0.5px) !important;
+            transform: none !important;
+            /* 💡 確保完全不放大 */
+        }
+
+        .rebuilt-step-5 #g-row-101-r,
+        .rebuilt-step-5 #g-row-105-r,
+        .rebuilt-step-5 #g-row-113-r {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            /* 💡 確保完全不放大 */
+            transform-origin: left center !important;
+        }
+
+        .rebuilt-step-5 #g-row-101-r .gantt-bar-rebuilt,
+        .rebuilt-step-5 #g-row-105-r .gantt-bar-rebuilt,
+        .rebuilt-step-5 #g-row-113-r .gantt-bar-rebuilt {
+            box-shadow: 0 0 15px rgba(0, 128, 128, 0.4) !important;
+            outline: 1.5px solid var(--primary) !important;
+        }
+
+        /* 🔓 階梯 6：高亮極端的96年度 */
+        .rebuilt-step-6 .gantt-row-rebuilt {
+            opacity: 0.15 !important;
+            filter: blur(0.5px) !important;
+        }
+
+        .rebuilt-step-6 #g-row-96-r {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            /* 💡 確保完全不放大 */
+            transform-origin: left center !important;
+        }
+
+        /* 幫 96 年的 Bar 加上高質感的警示紅外發光 */
+        .rebuilt-step-6 #g-row-96-r .gantt-bar-rebuilt {
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.5) !important;
+            outline: 1.5px solid var(--danger) !important;
+        }
+
+        /* 📸 照片外層容器：取消原本的 flex 左右分欄，改為相對定位 */
+        .history-images-container {
+            position: relative !important;
+            width: 100%;
+            height: 100vh;
+            display: block !important;
+            /* 取消左右排版 */
+            max-width: none !important;
+            padding: 0 !important;
+        }
+
+        /* 📸 單張照片相框：強迫單欄、寬度 55%、在螢幕正中央絕對置中 */
+        .history-img-frame {
+            position: absolute !important;
+            width: 55vw !important;
+            /* 💡 寬度調整為畫面的 55% */
+            max-width: 750px;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            /* 水平垂直置中 */
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            text-align: center;
+
+            /* 預設隱形，帶有平滑淡入淡出 */
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: opacity 0.5s ease, visibility 0.5s !important;
+        }
+
+        .history-img-frame img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .img-caption {
             font-size: 0.85rem;
-            margin-bottom: 15px; /* Space between refresh button and keyword buttons */
-            transition: all 0.3s;
-            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* 🎬 利用現有的腳本訊號控制單欄依序浮現 */
+        /* 進入階段 7：只單獨亮起第一張相框 */
+        .rebuilt-step-7 .history-img-frame:nth-child(1) {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* 進入階段 8：第一張照片淡出，接力亮起第二張相框 */
+        .rebuilt-step-8 .history-img-frame:nth-child(2) {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .rebuilt-step-8 .history-img-frame:nth-child(1) {
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        /* =======================================================
+           📸 大結局照片專屬樣式：單欄、電腦版寬度 50%、左側留白、最大高度限制
+           ======================================================= */
+        /* 💡 修正：為最後一張圖片定義專屬外框，確保不跟前兩張的樣式混淆 */
+        .history-img-frame-single {
+            position: absolute !important;
+            /* 💡 【滿足指令 2】：寬度設定為畫面的 50% */
+            width: 50vw !important;
+            max-width: 650px;
+            /* 💡 【满足指令 2 & 特權】：靠左，垂直置中，並與左邊界留有一點空白 */
+            left: 5% !important;
+            /* 精準向右平移對齊 12/16 的比例位置 */
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            /* 垂直置中 */
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            text-align: center;
+
+            /* 🔥 【滿足指令 1 & 特權】：最大高度設定為 70vh，絕對嚴格物理限制高度，不會變態大張！ */
+            max-height: 70vh !important;
+            overflow: hidden !important;
+            /* 確保內容不會溢出，保持相框質感 */
+
+            /* 初始化隱藏 */
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s !important;
+            z-index: 5;
+        }
+
+        .history-img-frame-single img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        /* =======================================================
+           🔓 劇本動態控制：隨階梯精準顯示與隱藏
+           ======================================================= */
+        /* 當進入卡片 9（結局文字）：點亮照片大盒子，但淡出前兩張照片，亮起第三張大照片 (003.jpg) */
+        .rebuilt-step-9 .history-img-frame:nth-child(1),
+        .rebuilt-step-9 .history-img-frame:nth-child(2) {
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        .rebuilt-step-9 .history-img-frame-single {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* 👑 特權：強制賦予紅線比 Bar 更高的層級 */
+        #chapter-2-rebuilt .gantt-red-line-rebuilt {
+            position: absolute !important;
+            left: 35.3% !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 0 !important;
+            height: 100% !important;
+            border-left: 2px dashed var(--danger) !important;
+            z-index: 10 !important;
+            /* 強制踩在 Bar (z-index: 3) 和背景格線 (z-index: 1) 的頭頂上！ */
+        }
+
+        /* =======================================================
+           💻 電腦版專屬：第 2 至 8 張卡片中線精準對齊畫面 75% 處
+           ======================================================= */
+        @media (min-width: 969px) {
+
+            /* 針對除了第一張以外的卡片 */
+            .gantt-scroll-content-rebuilt .gantt-card-rebuilt:not(:first-child) {
+                /* 例如往右推 100px，數值可依需求調整 */
+                margin-left: 50% !important;
+                /* 若需調整卡片寬度以適應右移，可視情況加入例如
+    max-width: calc(100% - 100px) !important; 
+    */
+            }
+        }
+
+        /* 第三章：2992億圖表 */
+        .total-budget-bar-container {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 50px;
+        }
+
+        .total-budget-bar {
+            width: 100%;
+            height: 24px;
+            background: #E9ECEF;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 12px;
+        }
+
+        .total-budget-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--danger);
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.2);
+            /* 減淡紅色陰影 */
+        }
+
+        .is-active-chapter .visible-box .total-budget-fill {
+            width: 9.86%;
+        }
+
+        .budget-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .donut-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .donut-chart-wrapper {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+
+        .donut-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            /* 圓餅圖漸層改為：主藍綠色 (0%-34%)、點綴藍綠色 (34%-94%)、警示紅 (94%-100%) */
+            background: conic-gradient(var(--primary) 0% 34%, var(--accent) 34% 94%, var(--danger) 94% 100%);
+            position: relative;
+        }
+
+        .donut-chart::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            background: var(--bg-deep);
+            /* 沿用白底變數，中空部分自動變白 */
+            border-radius: 50%;
+        }
+
+        .donut-legend {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .donut-legend li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .donut-legend li::before {
+            content: '';
             display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            margin-right: 12px;
         }
-        .btn-refresh-keywords:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-color: white;
+
+        .legend-new::before {
+            background: var(--primary);
         }
 
-        .btn-full-budget { 
-            background: var(--accent-color); color: white; font-weight: bold; 
-            margin-top: 20px; border-radius: 50px; padding: 10px 35px; border: none; 
-            transition: all 0.2s; font-size: 1.1rem; 
+        .legend-cont::before {
+            background: var(--accent);
         }
-        .btn-full-budget:hover { background: #c0392b; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        /* COMPONENTS */
-        .category-card { cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; border: none; border-radius: 16px; overflow: hidden; height: 100%; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .category-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .category-header { height: 140px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; font-weight: bold; position: relative; }
-        .cat-icon { font-size: 3rem; margin-bottom: 0.5rem; display: block; text-align: center; }
+        .legend-res::before {
+            background: var(--danger);
+        }
 
-        .btn-back { border: 1px solid #ced4da; color: #6c757d; background: white; font-size: 0.9rem; padding: 6px 16px; transition: all 0.2s; }
-        .btn-back:hover { background-color: #e9ecef; color: #333; border-color: #adb5bd; }
+        .step-scene.is-centered {
+            justify-content: center !important;
+            padding-left: 0 !important;
+            width: 100vw !important;
+            margin-left: -55vw !important;
+        }
 
-        .keyword-btn { margin: 6px; border-radius: 20px; font-size: 1.1rem; padding: 10px 20px; border: 1px solid #dee2e6; color: #555; background: white; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); white-space: normal; max-width: 320px; text-align: left; display: inline-flex; align-items: center; }
-        .keyword-btn:hover { border-color: var(--primary-color); color: var(--primary-color); background: #f8f9fa; transform: translateY(-3px); box-shadow: 0 5px 10px rgba(0,0,0,0.15); }
+        .step-scene.is-centered .story-card {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: 850px !important;
+            text-align: center;
+        }
 
-        .plan-block { cursor: pointer; transition: all 0.2s; border: 1px solid #e0e0e0; border-left: 4px solid transparent; position: relative; }
-        .plan-block:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.08) !important; border-left-color: var(--accent-color); }
-        .plan-amount { font-family: 'Courier New', monospace; font-weight: bold; color: var(--accent-color); font-size: 1.4rem; }
-        .tag-agency { display: inline-block; background-color: #6c757d; color: white; font-size: 0.8rem; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
-        .tag-status { display: inline-block; background-color: #17a2b8; color: white; font-size: 0.8rem; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
+        .step-scene.is-centered .story-card p {
+            font-size: 1.35rem;
+            line-height: 2;
+            color: var(--text-main);
+            font-weight: 500;
+        }
 
-        .step-section { display: none; padding-top: 2rem; padding-bottom: 3rem; animation: fadeIn 0.6s ease-out; }
-        .step-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* 排行榜外層容器 */
+        .ranking-container {
+            width: 100%;
+            max-width: 640px;
+            background: rgba(245, 247, 250, 0.85);
+            /* 原為深色，改為淺灰藍底色 */
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            /* 改為淺深色邊框 */
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            /* 改為淡淡的輕陰影 */
+            color: var(--text-main);
+            /* 改為深灰色字 */
+            font-family: system-ui, -apple-system, sans-serif;
+            pointer-events: auto !important;
+        }
 
-        /* STEP 4 & MODAL */
-        .detail-page-card { background: white; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.08); padding: 40px; }
-        .detail-agency-tag, .modal-agency-tag { background-color: #95a5a6; color: white; padding: 6px 12px; font-size: 1rem; border-radius: 4px; margin-bottom: 1rem; display: inline-block; }
-        .detail-plan-title, .modal-plan-title { font-weight: 800; font-size: 2.2rem; color: #2c3e50; line-height: 1.3; margin-bottom: 1rem; }
-        .detail-total-amount, .modal-total-amount { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.8rem; color: #2c3e50; }
+        .ranking-header h3 {
+            margin: 0 0 6px 0;
+            font-size: 1.25rem;
+            color: #b8860b;
+            /* 金色標題在白底下較難閱讀，微調為深暗金/琥珀色 */
+        }
 
-        .outcome-container { position: relative; background-color: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 30px; border-left: 5px solid #ced4da; }
-        .outcome-text { margin-bottom: 0; color: #555; line-height: 1.7; white-space: pre-line; overflow: hidden; transition: max-height 0.3s ease-out; }
-        .outcome-text.collapsed { max-height: 4.8em; mask-image: linear-gradient(180deg, #000 60%, transparent); -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent); }
-        .outcome-text.expanded { max-height: none; mask-image: none; -webkit-mask-image: none; }
-        .outcome-toggle-btn { font-size: 0.9rem; text-decoration: none; color: var(--primary-color); margin-top: 10px; display: inline-block; cursor: pointer; font-weight: bold; }
-        .outcome-toggle-btn:hover { text-decoration: underline; }
+        .ranking-subtitle {
+            margin: 0 0 20px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            /* 改為變數中灰色 */
+        }
 
-        .status-bar-container { height: 30px; border-radius: 6px; overflow: hidden; display: flex; background: #e9ecef; margin: 15px 0 5px 0; }
-        .status-seg { display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem; font-weight: bold; white-space: nowrap; overflow: hidden; }
-        .status-seg.remain { background-color: var(--color-remain); }
-        .status-seg.freeze { background-color: var(--color-freeze); color: #333; }
-        .status-seg.cut { background-color: var(--color-cut); }
-        
-        .chart-wrapper { display: flex; justify-content: space-around; align-items: stretch; height: 250px; padding-bottom: 10px; border-bottom: 2px solid #ddd; margin-top: 25px; }
-        .chart-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; width: 25%; position: relative; }
-        .bar-group { display: flex; width: 100%; align-items: flex-end; justify-content: center; height: 100%; gap: 6px; }
-        .v-bar { width: 40%; border-radius: 4px 4px 0 0; transition: height 0.5s ease; position: relative; min-height: 2px; }
-        .v-bar.cut { background-color: var(--color-cut); opacity: 0.8; }
-        .v-bar.freeze { background-color: var(--color-freeze); opacity: 0.9; }
-        .bar-label { margin-top: 10px; font-size: 1rem; font-weight: bold; color: #555; text-align: center; }
-        .bar-val { position: absolute; top: -22px; font-size: 0.8rem; width: 100%; text-align: center; color: #444; font-weight: bold; }
+        /* 📊 排行榜表格主體 */
+        .ranking-table {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 290px !important;
+            overflow-y: auto !important;
+            padding-right: 8px;
+        }
 
-        .budget-bar-container { margin-top: 15px; background-color: #f1f1f1; border-radius: 4px; height: 12px; overflow: hidden; display: flex; }
-        .budget-bar-segment { height: 100%; }
-        .budget-legend { display: flex; flex-wrap: wrap; margin-top: 8px; font-size: 0.8rem; color: #666; }
-        .legend-item { display: flex; align-items: center; margin-right: 12px; margin-bottom: 4px; }
-        .legend-color { width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+        .ranking-table::-webkit-scrollbar {
+            width: 6px;
+        }
 
-        .scroll-table-container { max-height: 300px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; margin-top: 20px; }
-        .table-custom thead th { position: sticky; top: 0; background: #f8f9fa; z-index: 1; padding: 12px; }
-        .table-custom td { font-size: 1rem; padding: 12px; }
+        .ranking-table::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.02);
+            /* 改為極淡深色軌道 */
+            border-radius: 3px;
+        }
 
-        .general-cut-alert { background-color: #ffe6e6; border-left: 5px solid var(--color-cut); padding: 15px; color: #c0392b; font-weight: bold; margin-top: 20px; border-radius: 6px; font-size: 1.1rem; }
-        .legis-label { font-size: 0.9rem; color: #7f8c8d; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
-        .legis-tag { display: inline-block; padding: 6px 12px; border-radius: 4px; font-size: 0.95rem; margin-right: 8px; margin-bottom: 8px; border: 1px solid; }
-        .legis-tag.cut { border-color: var(--color-cut); color: var(--color-cut); background: #fff5f5; }
-        .legis-tag.freeze { border-color: var(--color-freeze); color: #b7950b; background: #fffcf0; }
-        .legend-row { display: flex; justify-content: center; gap: 15px; font-size: 0.9rem; color: #666; margin-bottom: 15px; }
-        .legend-dot { width: 12px; height: 12px; display: inline-block; margin-right: 5px; border-radius: 2px; }
+        .ranking-table::-webkit-scrollbar-thumb {
+            background: rgba(0, 128, 128, 0.25);
+            /* 改為主要藍綠色透明度 */
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
 
-        .step4-footer { border-top: 1px solid #dee2e6; margin-top: 3rem; padding-top: 2rem; text-align: center; }
-        .step4-footer h5 { margin-bottom: 1.5rem; color: #6c757d; font-weight: bold; }
-        
-        #loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s; }
+        .ranking-table::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 128, 128, 0.6);
+            /* 懸停時加深藍綠色 */
+        }
+
+        .ranking-row {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.02);
+            /* 原為微白透明，改為微黑透明 */
+            padding: 10px 14px;
+            border-radius: 8px;
+            border-left: 3px solid #ccc;
+            /* 改為淺灰邊框 */
+            transition: transform 0.2s;
+        }
+
+        .ranking-row.top-1 {
+            border-left-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+            /* 微微加深金色背景權重 */
+        }
+
+        .ranking-row.top-2 {
+            border-left-color: #c0c0c0;
+            background: rgba(192, 192, 192, 0.08);
+        }
+
+        .ranking-row.top-3 {
+            border-left-color: #cd7f32;
+            background: rgba(205, 127, 50, 0.08);
+        }
+
+        .rank-badge {
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 0.85rem;
+            background: #e2e8f0;
+            /* 原為深黑，改為淺灰色圓圈底 */
+            margin-right: 14px;
+            flex-shrink: 0;
+        }
+
+        .top-1 .rank-badge {
+            background: linear-gradient(135deg, #ffe066, #f5b041);
+            color: #000;
+        }
+
+        .top-2 .rank-badge {
+            background: linear-gradient(135deg, #e5e7e9, #bdc3c7);
+            color: #000;
+        }
+
+        .top-3 .rank-badge {
+            background: linear-gradient(135deg, #f5cba7, #dc7633);
+            color: #000;
+        }
+
+        .project-info {
+            flex-grow: 1;
+            padding-right: 15px;
+            min-width: 0;
+        }
+
+        .project-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            line-height: 1.4;
+            white-space: normal !important;
+            word-break: break-all !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
+        }
+
+        .dept-tag {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            /* 改為中灰色變數 */
+            margin-top: 2px;
+        }
+
+        .amount-wrapper {
+            width: 120px;
+            flex-shrink: 0;
+            text-align: right;
+        }
+
+        .amount-value {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #00838f;
+            /* 原為純藍，改為高質感深藍綠色 (Deep Cyan) */
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .top-1 .amount-value {
+            color: #b8860b;
+            /* 前三名超連結/數值顏色調整，確保亮色背景閱讀舒適 */
+        }
+
+        .amount-bar {
+            height: 4px;
+            background: #00a896;
+            /* 數值長條圖改為點綴藍綠色 */
+            border-radius: 2px;
+            margin-top: 4px;
+            margin-left: auto;
+        }
+
+        .top-1 .amount-bar {
+            background: #ffd700;
+        }
+
+        .top-2 .amount-bar {
+            background: #c0c0c0;
+        }
+
+        .top-3 .amount-bar {
+            background: #cd7f32;
+        }
+
+        /* =========================================================
+           🚀 第四章：雙向線性金字塔圖表（橫向橫列 Row 對齊版） 🚀
+           ========================================================= */
+        .dash-container-box {
+            width: 100%;
+            max-width: 650px;
+            padding: 25px 15px;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: var(--text-main);
+            /* 改為深灰色字 */
+            position: relative;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .dash-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .dash-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: var(--primary);
+            /* 原為 var(--accent)，改為主要藍綠色增加安定感 */
+            font-weight: 900;
+        }
+
+        .dash-header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* 背景網格尺線層 */
+        .pyramid-grid-bg-layer {
+            position: absolute;
+            top: 110px;
+            bottom: 50px;
+            left: 15px;
+            right: 15px;
+            display: grid;
+            grid-template-columns: 1fr 120px 1fr;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bg-grid-side {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            height: 100%;
+        }
+
+        .bg-grid-side .grid-v-line {
+            border-left: 1px dashed rgba(0, 0, 0, 0.06);
+            /* 原為白色透明虛線，改為深色透明虛線 */
+        }
+
+        /* 左側（排除組）的 0 線 */
+        .bg-grid-side.left-side {
+            border-right: 1px solid rgba(0, 0, 0, 0.15);
+            /* 改為淺深色實線 */
+        }
+
+        .bg-grid-side.left-side .grid-v-line:first-child {
+            border-left: none;
+        }
+
+        /* 右側（納入組）的 0 線 */
+        .bg-grid-side.right-side {
+            border-left: 1px solid rgba(0, 0, 0, 0.15);
+            /* 改為淺深色實線 */
+        }
+
+        .bg-grid-side.right-side .grid-v-line:first-child {
+            border-left: none;
+        }
+
+        /* 欄位頂部標籤標題列 */
+        .pyramid-title-row {
+            display: grid;
+            grid-template-columns: 1fr 120px 1fr;
+            gap: 15px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            /* 改為淺深色分界線 */
+            position: relative;
+            z-index: 5;
+        }
+
+        /* 網格橫列主行 */
+        .pyramid-align-row {
+            display: grid;
+            grid-template-columns: 1fr 120px 1fr;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* 中間文字標籤樣式 */
+        .pyramid-align-row .cat-item {
+            font-size: 0.8rem;
+            font-weight: bold;
+            line-height: 1.3;
+            text-align: center;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.02);
+            /* 原為微白透明，改為微黑透明 */
+            border-radius: 4px;
+            padding: 4px 2px;
+            min-height: 38px;
+        }
+
+        /* 左側與右側的 Bar 容器 */
+        .pyramid-align-row .bar-group {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+            position: relative;
+        }
+
+        .pyramid-align-row .left-bar-box {
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+        }
+
+        .pyramid-align-row .right-bar-box {
+            justify-content: flex-start;
+        }
+
+        .pyramid-align-row .bar-rect {
+            height: 20px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            transition: width 1s ease-out;
+        }
+
+        .pyramid-align-row .rect-danger {
+            background: linear-gradient(to left, var(--danger), #ff1744);
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.15);
+            /* 減淡發光 */
+        }
+
+        .pyramid-align-row .rect-primary {
+            /* 右側長条圖改為由主藍綠色向亮藍綠色漸層 */
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            box-shadow: 0 0 10px rgba(0, 128, 128, 0.15);
+            /* 藍綠色調淡發光 */
+        }
+
+        .pyramid-align-row .val-num {
+            font-size: 0.85rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .pyramid-align-row .left-bar-box .val-num {
+            color: #c62828;
+            /* 排除組數值改用較深的警示紅，在白底上可讀性更高 */
+            padding-right: 6px;
+        }
+
+        .pyramid-align-row .right-bar-box .val-num {
+            color: #006064;
+            /* 納入組數值改用深海藍綠色 (Dark Teal)，加強文字對比度 */
+            padding-left: 6px;
+        }
+
+        /* 底部線性比例尺刻度 */
+        .p-scale-axis-linear {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 120px 1fr;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.15);
+            /* 改為淺深色虛線 */
+            position: relative;
+            z-index: 5;
+        }
+
+        .axis-wrapper {
+            position: relative;
+            height: 18px;
+            width: 100%;
+        }
+
+        .axis-wrapper span {
+            position: absolute;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            transform: translateX(-50%);
+        }
+
+        .linear-ticks-right span:nth-child(1) {
+            left: 0%;
+            transform: none;
+            color: var(--primary);
+            /* 原為var(--accent)金黃，改為主藍綠色 */
+            font-weight: bold;
+        }
+
+        .linear-ticks-right span:nth-child(2) {
+            left: 25%;
+        }
+
+        .linear-ticks-right span:nth-child(3) {
+            left: 50%;
+        }
+
+        .linear-ticks-right span:nth-child(4) {
+            left: 75%;
+        }
+
+        .linear-ticks-right span:nth-child(5) {
+            left: 100%;
+            transform: translateX(-100%);
+        }
+
+        .linear-ticks-left {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace;
+            position: relative;
+            padding-right: 0px;
+        }
+
+        .linear-ticks-left span:nth-child(1) {
+            left: 0%;
+            transform: none;
+        }
+
+        .linear-ticks-left span:nth-child(2) {
+            left: 25%;
+        }
+
+        .linear-ticks-left span:nth-child(3) {
+            left: 50%;
+        }
+
+        .linear-ticks-left span:nth-child(4) {
+            left: 75%;
+        }
+
+        .linear-ticks-left span:nth-child(5) {
+            left: 100%;
+            transform: translateX(-100%);
+            color: var(--primary);
+            /* 原為var(--accent)金黃，改為主藍綠色 */
+            font-weight: bold;
+        }
+
+        .axis-center-gap {
+            text-align: center;
+            color: rgba(0, 0, 0, 0.1);
+            /* 改為淺深色文字 */
+            font-size: 0.6rem;
+        }
+
+        /* 🛠️ 修正六：優化底部 CTA 結語大容器，高質感大間距阻絕貼底 */
+        .footer-cta {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 20px 120px 20px;
+            /* 背景改為由極淡的藍綠色朝純白底色向上漸層 */
+            background: linear-gradient(0deg, rgba(0, 128, 128, 0.05) 0%, var(--bg-deep) 100%);
+        }
+
+        /* 進入資料庫按鈕，套用亮眼藍綠配色 */
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--primary) !important;
+            /* 原為金黃色，改為主色藍綠色 */
+            color: #FFFFFF !important;
+            /* 改為純白文字以利高對比閱讀 */
+            padding: 15px 45px;
+            margin-top: 45px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.2);
+            /* 調整為淺藍綠色外陰影 */
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cta-btn:hover {
+            background-color: #006064 !important;
+            /* 懸停時轉為高質感深藍綠色 */
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 128, 128, 0.35);
+        }
+
+        /* 手機版適配 */
+        @media (max-width: 968px) {
+            .local-sticky-stage {
+                width: 100%;
+                height: auto;
+                z-index: 10;
+            }
+
+            .local-scroll-content {
+                margin-top: 0 !important;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .step-scene {
+                min-height: auto;
+                padding: 30px 0;
+                justify-content: center !important;
+            }
+
+            .story-card {
+                max-width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                /* 原為黑底，改為明亮白底半透明 */
+            }
+
+            #chapter-1 .local-sticky-stage {
+                display: none;
+            }
+
+            #chapter-1 .local-scroll-content::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                width: 2px;
+                /* 行動版軸線漸層，改由主藍綠色與點綴藍綠色延伸至警示紅 */
+                background: linear-gradient(to bottom, var(--primary) 0%, var(--accent) 70%, var(--danger) 100%);
+                transform: translateX(-50%);
+                z-index: 0;
+            }
+
+            #chapter-1 .mobile-timeline-badge {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+                width: 100%;
+                margin-bottom: 20px;
+                position: relative;
+                z-index: 2;
+            }
+
+            #chapter-1 .mobile-node-item {
+                background: #f0fdfa;
+                /* 原為暗藍，改為極淺的藍綠色底（Mint tint） */
+                border: 2px solid var(--primary);
+                padding: 8px 20px;
+                border-radius: 50px;
+                font-size: 0.85rem;
+                font-weight: bold;
+                text-align: center;
+                max-width: 280px;
+                color: var(--text-main);
+            }
+
+            #chapter-1 .step-scene {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #chapter-2,
+            #chapter-3,
+            #chapter-4 {
+                display: flex;
+                flex-direction: column;
+            }
+
+            #chapter-2 .local-sticky-stage,
+            #chapter-3 .local-sticky-stage,
+            #chapter-4 .local-sticky-stage {
+                position: sticky;
+                top: 0;
+                height: 40vh;
+                width: 100%;
+                background: var(--bg-deep);
+                /* 自動套用亮白底色 */
+                z-index: 10;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+                /* 改為淺深色分界線 */
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+                /* 改為適合亮底的微陰影 */
+            }
+
+            .dynamic-chart-box {
+                transform: scale(0.85) !important;
+                height: 100%;
+                padding: 10px;
+            }
+
+            #chapter-2 .dynamic-chart-box,
+            #chapter-3 .dynamic-chart-box {
+                transform: scale(0.65) !important;
+                justify-content: center;
+                padding: 0;
+            }
+
+            .step-scene.is-centered {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <div id="loading-overlay">
-        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
-        <h4 class="text-muted">正在連線至預算資料庫...</h4>
-    </div>
-
-    <header class="site-header">
-        <div class="container">
-            <a onclick="goToStep(0)" class="site-brand">
-                <span style="font-size: 1.5rem; margin-right: 10px;">📊</span> 預算審查觀測站
-            </a>
+    <section class="hero-section">
+        <h1 class="hero-title">
+            115年總預算審議回顧<br>
+            <span>卡關逾200天才付委、718億先行動支有何隱憂</span>
+        </h1>
+        <p
+            style="font-size: 1.15rem; max-width: 750px; color: var(--text-muted); text-align: justify; line-height: 1.8;">
+            115年度總預算審查在115年4月21日付委。距離114年9月30日行政院函請立法院審議已過203天。這是近年總預算預算審查最晚進行的一次，也對政府施政產生影響，2992億新興計畫無法動支，TPASS、生育給付等補助無法順利發放。
+        </p>
+        <div class="hero-meta">
+            更新時間：2026/05/25 &nbsp;|&nbsp; 記者：預算分析組 &nbsp;|&nbsp; 中央社深度報導
         </div>
-    </header>
+        <div class="scroll-indicator">向下捲動探索</div>
+    </section>
 
-    <main>
-        <section id="step-0" class="hero-section step-section active">
-            <div class="hero-bg-pattern"></div>
-            <div class="container position-relative z-2">
-                <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">2026 政府預算專題</span>
-                
-                <h1 class="hero-title">115年度總預算<br>來看看我的錢被花去哪？</h1>
-                <p class="fs-4 mb-3 opacity-75">中央政府歲出規模約 3 兆元。<br>您的納稅錢如何分配？審查過程刪了多少？</p>
-                
-                <div class="hero-quick-links">
-                    <p class="hero-prompt">你可以選擇你關心的議題，或直接看完整的預算→</p>
-                    
-                    <button class="btn-refresh-keywords" onclick="renderRandomKeywords('hero-random-keywords')">
-                        🔄 換一組關鍵字
-                    </button>
-                    
-                    <div id="hero-random-keywords" class="d-flex justify-content-center flex-wrap mb-2"></div>
-                    
-                    <button class="btn btn-full-budget" onclick="goToStep(1)">看完整預算</button>
+    <section class="chapter-section" id="chapter-1">
+        <div class="chapter-intro"
+            style="max-width: 800px; margin: 0 auto; padding: 100px 20px 60px 20px; text-align: center; position: relative; z-index: 3;">
+            <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
+                <span style="font-size: 1.2rem; display: block; margin-bottom: 10px; color: var(--accent);">第一章</span>
+                為什麼今年這麼晚才審
+            </h2>
+            <p>
+                中央政府總預算是政府施政用錢的依據，在「預算法」中有規定審議時程，原則上須在預算執行年度開始前一個月完成審議。如果來不及在時限內完成，依預算法第54條，政府可依上年度標準繼續執行既有業務，不過新增計畫與部分預備金，原則上須待預算通過才能動用。
+            </p>
+        </div>
+
+        <div class="center-timeline-container">
+            <div class="center-main-line"></div>
+
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node">
+                    <span class="node-date">2025/01/07</span>
+                    <p>立法院三讀「警察人員人事條例」</p>
                 </div>
             </div>
-        </section>
 
-        <div class="container pt-3">
-            <nav aria-label="breadcrumb" id="breadcrumb-nav" style="display:none;">
-                <ol class="breadcrumb custom-breadcrumb" id="breadcrumb-list"></ol>
-            </nav>
-
-            <section id="step-1" class="step-section">
-                <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node">
+                    <span class="node-date">2025/06/10</span>
+                    <p>立法院三讀「軍人待遇條例」</p>
                 </div>
-                <div class="text-start mb-5">
-                    <h2 class="display-6 fw-bold mb-2">請選擇支出類別</h2>
+            </div>
+
+            <div class="timeline-row item-card left-side">
+                <div class="story-card">
+                    <p>立法院分別在114年1月7日三讀「警察人員人事條例」增加警校退休金，又在同年6月10日三讀「軍人待遇條例」增加軍人薪資及加給。</p>
                 </div>
-                <div class="row g-4" id="category-container"></div>
-            </section>
+            </div>
 
-            <section id="step-2" class="step-section">
-                <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node">
+                    <span class="node-date">2025/08/22</span>
+                    <p>行政院針對兩項條例提出釋憲</p>
                 </div>
-                <div class="text-start mb-4">
-                    <h2 class="mb-1">選擇關鍵字...</h2>
-                    <small class="text-muted">目前類別：<span id="selected-category-name" class="text-primary fw-bold"></span></small>
+            </div>
+
+            <div class="timeline-row item-card right-side">
+                <div class="story-card">
+                    <p>行政院則以兩項修法違反憲法權力分立跟責任政治為由，在8月22日提出釋憲。</p>
                 </div>
-                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 text-center">
-                    <div id="keywords-container" class="d-flex flex-wrap gap-2 justify-content-center"></div>
-                    <div class="mt-4 text-muted fst-italic small">
-                        <span class="badge bg-warning text-dark me-1">數字</span> 表示關鍵字對應的工作計畫數量
-                    </div>
+            </div>
+
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node">
+                    <span class="node-date">2025/09/30</span>
+                    <p>行政院函請立法院審議115年度總預算案</p>
                 </div>
-            </section>
+            </div>
 
-            <section id="step-3" class="step-section">
-                <div class="mb-3 text-start">
-                    <button id="btn-back-step3" class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
+            <div class="timeline-row item-card left-side">
+                <div class="story-card">
+                    <p>9月底，行政院將115年度中央政府總預算案送進立法院，但藍白黨團認為，「軍人待遇條例」及「警察人員人事條例」已經三讀，行政院卻沒有依法編列，批評行政院違法亂紀。</p>
                 </div>
-                <div class="text-start mb-4">
-                    <h2 class="mb-1">關鍵字：「<span id="list-view-title" class="text-primary fw-bold"></span>」</h2>
-                    <small class="text-muted">共找到 <span id="list-count" class="fw-bold"></span> 筆資料</small>
+            </div>
+
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node">
+                    <span class="node-date">2025/10/07</span>
+                    <p>立法院復議，總預算案另定期處理</p>
                 </div>
-                <div id="plan-list-container" class="row g-3"></div>
-            </section>
+            </div>
 
-            <section id="step-4" class="step-section">
-                <div class="mb-3 text-start">
-                    <button class="btn btn-back rounded-pill" onclick="handleGlobalBack()">← 回上一頁</button>
+            <div class="timeline-row item-card right-side">
+                <div class="story-card">
+                    <p>行政院則多次解釋，暫緩編列志願役加薪以及提高警察人員所得替代率預算，主要是考量公平性、衡平性，且有違憲疑慮，因此聲請釋憲，若釋憲結果未違憲，將追溯補齊。</p>
                 </div>
+            </div>
 
-                <div class="detail-page-card">
-                    <div class="mb-4">
-                        <span class="detail-agency-tag" id="d-agency"></span>
-                        <h2 class="detail-plan-title" id="d-title"></h2>
-                        <div class="d-flex justify-content-between align-items-end border-bottom pb-3">
-                            <span class="text-muted">預算總額</span>
-                            <span class="detail-total-amount" id="d-amount"></span>
-                        </div>
-                    </div>
 
-                    <div class="outcome-container">
-                        <h6 class="fw-bold text-secondary mb-2">計畫內容與預期成果</h6>
-                        <p class="outcome-text collapsed" id="d-outcome-text"></p>
-                        <a id="d-outcome-toggle" class="outcome-toggle-btn" onclick="toggleOutcome()">▼ 展開完整內容</a>
-                    </div>
-
-                    <h6 class="fw-bold text-secondary">預算審查結果占比</h6>
-                    <div class="status-bar-container" id="d-status-bar"></div>
-                    <div class="d-flex justify-content-between small text-muted mb-4">
-                        <div class="d-flex align-items-center"><div style="width:10px;height:10px;background:var(--color-remain);margin-right:5px;"></div>通過/剩餘</div>
-                        <div class="d-flex align-items-center"><div style="width:10px;height:10px;background:var(--color-freeze);margin-right:5px;"></div>凍結</div>
-                        <div class="d-flex align-items-center"><div style="width:10px;height:10px;background:var(--color-cut);margin-right:5px;"></div>刪減</div>
-                    </div>
-
-                    <h6 class="fw-bold text-secondary mt-5">各階段審查刪凍變化</h6>
-                    <div class="legend-row">
-                        <div><span class="legend-dot" style="background:var(--color-cut)"></span>刪減</div>
-                        <div><span class="legend-dot" style="background:var(--color-freeze)"></span>凍結</div>
-                    </div>
-                    <div class="chart-wrapper" id="d-chart-wrapper"></div>
-
-                    <h6 class="fw-bold text-secondary mt-4">刪減凍結細目</h6>
-                    <div class="scroll-table-container">
-                        <table class="table table-hover table-custom mb-0">
-                            <thead>
-                                <tr>
-                                    <th scope="col" width="30%">項目</th>
-                                    <th scope="col">說明 / 理由</th>
-                                </tr>
-                            </thead>
-                            <tbody id="d-details-table-body"></tbody>
-                        </table>
-                    </div>
-
-                    <div id="d-general-cut" class="general-cut-alert d-none"></div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="legis-label text-danger">提案刪減委員</div>
-                            <div id="d-legis-cut"></div>
-                        </div>
-                        <div class="col-md-6 mt-3 mt-md-0">
-                            <div class="legis-label text-warning">提案凍結委員</div>
-                            <div id="d-legis-freeze"></div>
-                        </div>
-                    </div>
-
-                    <div class="step4-footer">
-                        <h5>想了解其他預算？</h5>
-                        <div id="step4-random-keywords" class="d-flex justify-content-center flex-wrap mb-3"></div>
-                        <button class="btn btn-outline-primary rounded-pill px-4" onclick="goToStep(1)">看完整預算 →</button>
-                    </div>
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node node-danger">
+                    <span class="node-date">2025/12/01</span>
+                    <p>法定預算審查完成期限</p>
                 </div>
-            </section>
+            </div>
+
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node node-danger">
+                    <span class="node-date">2025/12/16</span>
+                    <p>總統公布預算法定期限</p>
+                </div>
+            </div>
+
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node node-warning">
+                    <span class="node-date">2026/01/01</span>
+                    <p>115年會計年度開始，總預算案仍未付委</p>
+                </div>
+            </div>
+
+            <div class="timeline-row item-card left-side">
+                <div class="story-card">
+                    <p>行政、立法陷入僵局，結果形成憲政史上第一次出現跨年度總預算仍未進委員會審查的狀況。直到115年4月21日總預算案付委審查。</p>
+                </div>
+            </div>
+
+            <div class="timeline-row item-node">
+                <div class="timeline-block-node node-success">
+                    <span class="node-date">2026/04/21</span>
+                    <p>付委審查</p>
+                </div>
+            </div>
+
         </div>
-    </main>
+    </section>
 
-    <footer class="site-footer">
-        <div class="container">
-            <p class="mb-1 fw-bold">預算審查觀測站</p>
-            <p class="mb-0">資料來源：主計總處、立法院議事暨公報網</p>
-            <p class="footer-source">本網頁為新聞專題測試版，並非最終資料，僅供參考。</p>
+    <section class="chapter-section-rebuilt" id="chapter-2-rebuilt">
+
+        <div class="gantt-fixed-stage-rebuilt" id="gantt-stage-rebuilt">
+            <div class="gantt-backdrop-box-rebuilt" id="backdrop-gantt-rebuilt">
+                <div class="gantt-chart-container-rebuilt">
+
+                    <div class="gantt-title-area-rebuilt">
+                        <h3 style="color: var(--primary); font-weight:900; margin: 0; font-size: 1.25rem;">中央政府總預算審議時程
+                        </h3>
+                    </div>
+
+                    <div class="gantt-legend-rebuilt">
+                        <div class="legend-item">
+                            <div class="legend-color party-dpp"></div>民進黨
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color party-kmt"></div>國民黨
+                        </div>
+                    </div>
+
+                    <div class="gantt-x-axis-rebuilt">
+                        <div class="tick" style="left: 0%;">
+                            <div class="tick-line"></div><span class="gantt-grid-label-rebuilt">9月</span>
+                        </div>
+                        <div class="tick" style="left: 20%;">
+                            <div class="tick-line"></div><span class="gantt-grid-label-rebuilt">11月</span>
+                        </div>
+                        <div class="tick" style="left: 40%;">
+                            <div class="tick-line-major"></div><span class="gantt-grid-label-rebuilt">1月</span>
+                        </div>
+                        <div class="tick" style="left: 60%;">
+                            <div class="tick-line"></div><span class="gantt-grid-label-rebuilt">3月</span>
+                        </div>
+                        <div class="tick" style="left: 80%;">
+                            <div class="tick-line"></div><span class="gantt-grid-label-rebuilt">5月</span>
+                        </div>
+                    </div>
+
+                    <div class="gantt-red-deadline-stage">
+                        <div class="execution-zone-bg-rebuilt">
+                            <div class="execution-zone-label-rebuilt"></div>
+                        </div>
+                        <div class="gantt-red-line-rebuilt"></div>
+                        <div class="gantt-red-label-rebuilt"></div>
+                    </div>
+
+                    <div class="gantt-y-axis-rebuilt">
+                        <div class="y-tick"><span class="gantt-year-rebuilt">96年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">97年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">98年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">99年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">100年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">101年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">102年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">103年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">104年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">105年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">106年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">107年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">108年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">109年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">110年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">111年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">112年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">113年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt">114年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                        <div class="y-tick"><span class="gantt-year-rebuilt year-115-label">115年</span>
+                            <div class="tick-line-y"></div>
+                        </div>
+                    </div>
+
+                    <div class="gantt-grid-rebuilt">
+                        <div class="grid-line" style="left: 0%;"></div>
+                        <div class="grid-line" style="left: 20%;"></div>
+                        <div class="grid-line-major" style="left: 40%;"></div>
+                        <div class="grid-line" style="left: 60%;"></div>
+                        <div class="grid-line" style="left: 80%;"></div>
+                    </div>
+
+                    <div class="gantt-rows-container-rebuilt">
+                        <div class="gantt-row-rebuilt" id="g-row-96-r">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 11%; --w: 84%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 10.6%; --w: 26%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 10%; --w: 35%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 12.3%; --w: 31.7%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 14.3%; --w: 29.7%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt" id="g-row-101-r">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 9%; --w: 25.3%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 15.3%; --w: 29.7%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 16%; --w: 28.6%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 10%; --w: 37.6%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt" id="g-row-105-r">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-kmt" style="left: 7.3%; --w: 28.7%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 11%; --w: 35.3%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 14.3%; --w: 35.7%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 20%; --w: 23.3%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 8%; --w: 38.6%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 9.6%; --w: 40%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 17.3%; --w: 32%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 11.3%; --w: 35%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt" id="g-row-113-r">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 11%; --w: 25.3%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp" style="left: 22.6%; --w: 24.4%;"></div>
+                            </div>
+                        </div>
+                        <div class="gantt-row-rebuilt">
+                            <div class="gantt-track-rebuilt">
+                                <div class="gantt-bar-rebuilt party-dpp gantt-bar-115-rebuilt"
+                                    style="left: 77%; --w: 15%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gantt-backdrop-box-rebuilt" id="backdrop-images-rebuilt">
+                <div class="history-images-container">
+                    <div class="history-img-frame">
+                        <img src="budget96001.jpg" alt="陳水扁時期預算案審議">
+                        <div class="img-caption">96年度預算歷史檔案 01</div>
+                    </div>
+                    <div class="history-img-frame">
+                        <img src="budget96002.jpg" alt="朝小野大政治攻防">
+                        <div class="img-caption">96年度預算歷史檔案 02</div>
+                    </div>
+                    <div class="history-img-frame-single">
+                        <img src="budget003.jpg" alt="大結局照片：內閣改組與預算退回">
+                        <div class="img-caption">歷史照片：預算退回與內閣改組</div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="gantt-scroll-content-rebuilt">
+            <div class="gantt-card-rebuilt" data-rebuilt-step="1">
+                <div class="story-card">
+                    <h2><span
+                            style="font-size: 1.2rem; display: block; margin-bottom: 10px; color: var(--accent);">第二章</span>不是只有今年晚，但今年最極端
+                    </h2>
+                    <p>回顧歷年審查歷程，在預算執行年度開始前就完成審查的例子並不常見。</p>
+                </div>
+            </div>
+            <div class="gantt-card-rebuilt" data-rebuilt-step="2">
+                <div class="story-card">
+                    <p>中央政府總預算案原則上應於前一年度底完成審議，這張圖表橫向展現了歷年各政黨執政時的預算審議時程（從9月至隔年5月）。</p>
+                </div>
+            </div>
+            <div class="gantt-card-rebuilt" data-rebuilt-step="3">
+                <div class="story-card">
+                    <p>圖上的方塊代表該年度預算審議立時多久，方塊的顏色則代表執政黨。</p>
+                </div>
+            </div>
+            <div class="gantt-card-rebuilt" data-rebuilt-step="4">
+                <div class="story-card">
+                    <p>紅色的虛線是法律規定預算審理完成時間，深灰色的區塊則代表預算應該開始執行的時間</p>
+                </div>
+            </div>
+            <div class="gantt-card-rebuilt" data-rebuilt-step="5">
+                <div class="story-card">
+                    <p>蔡英文執政8年間只有1次（113年度），更早的馬英九執政時期也僅有2次（101年度及105年度），大部分都是到隔年2月前才完成審議。</p>
+                </div>
+            </div>
+            <div class="gantt-card-rebuilt" data-rebuilt-step="6">
+                <div class="story-card">
+                    <p>其中96年度總預算更是一路拖到6月才三讀，當年陳水扁總統順利連任，不過立法院朝小野大，國民黨提出「中選會組織法」修正案，朝野遲遲沒有共識，連帶影響總預算案的審議，最終直到民國97年6月15日才三讀，也創下首次立法院預算會期沒有審完預算的紀錄。
+                    </p>
+                </div>
+            </div>
+            <div class="gantt-card-rebuilt" data-rebuilt-step="7">
+                <div class="story-card" style="opacity:0; pointer-events:none;"></div>
+            </div>
+            <div class="gantt-card-rebuilt" data-rebuilt-step="8">
+                <div class="story-card" style="opacity:0; pointer-events:none;"></div>
+            </div>
+
+            <div class="gantt-card-rebuilt" data-rebuilt-step="9">
+                <div class="story-card">
+                    <p>至於預算全數退回重編的狀況也十分少見，過去僅發生過3次，且3次都是因為內閣改組。第一次同樣發生在陳水扁執政時，民國89年時任行政院長唐飛在報告總預算案期間請辭，接任行政院長張俊雄尊重立院協商決議而撤回總預算案，並於2週後再度函請立院審議。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chapter-section" id="chapter-3">
+        <div class="chapter-intro"
+            style="max-width: 800px; margin: 0 auto; padding: 100px 20px 60px 20px; text-align: center; position: relative; z-index: 3;">
+            <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
+                <span style="font-size: 1.2rem; display: block; margin-bottom: 10px; color: var(--accent);">第三章</span>
+                晚審影響新興預算無法動支
+            </h2>
+        </div>
+
+        <div class="local-sticky-stage">
+            <div class="dynamic-chart-box visible-box" id="budget-total-box">
+                <div class="total-budget-bar-container">
+                    <h3 style="color: var(--text-main); font-size: 1.25rem; margin-bottom: 15px;">2992億之於總歲出的比例</h3>
+                    <div class="total-budget-bar">
+                        <div class="total-budget-fill"></div>
+                    </div>
+                    <div class="budget-label-row"><span>新興計畫：2,992 億元</span><span>總歲出：3兆349億7437萬1千元</span></div>
+                </div>
+            </div>
+
+            <div class="dynamic-chart-box" id="budget-donut-box">
+                <div style="width: 100%; max-width: 500px;">
+                    <h3
+                        style="color: var(--text-main); font-size: 1.25rem; margin-bottom: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">
+                        2,992億分配比例</h3>
+                    <div class="donut-container">
+                        <div class="donut-chart-wrapper">
+                            <div class="donut-chart"></div>
+                        </div>
+                        <ul class="donut-legend">
+                            <li class="legend-new"><span>新興計畫</span><strong>1,017 億</strong></li>
+                            <li class="legend-cont"><span>延續計畫增額</span><strong>1,805 億</strong></li>
+                            <li class="legend-res"><span>預備金</span><strong>170 億</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="local-scroll-content">
+            <div class="step-scene" data-visual="total">
+                <div class="story-card">
+                    <p>前述提到，受預算法規定，在總預算未審議前，新興計畫及設備原則上不能動用。行政院在今年1月公布，總預算未按時完成審議，影響金額約2992億。</p>
+                </div>
+            </div>
+            <div class="step-scene" data-visual="donut">
+                <div class="story-card">
+                    <p>根據行政院資料，當中約1017億屬於新興計畫，包括TPASS通勤月票、生育給付補助、AI新十大建設、各地治水預算等等項目；另外，1805億則是經常性經費或延續性計畫較去年增加的金額，剩下約170億則是各單位第一預備金、第二預備金及災害準備金。
+                    </p>
+                </div>
+            </div>
+            <div class="step-scene is-centered" data-visual="none">
+                <div class="story-card">
+                    <p>這些項目因為預算遲未審查而無法使用，流程補助款可以在三讀後追加發放，但凡涉及工程等費用，可能因為執行期不足而導致經費無法發揮使用，最終剩餘沒有執行的錢仍須回歸國庫，不能留到明年繼續沿用。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chapter-section" id="chapter-4">
+        <div class="chapter-intro"
+            style="max-width: 800px; margin: 0 auto; padding: 100px 20px 60px 20px; text-align: center; position: relative; z-index: 3;">
+            <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
+                <span style="font-size: 1.2rem; display: block; margin-bottom: 10px; color: var(--accent);">第四章</span>
+                在野提718億新興計畫方案
+            </h2>
+        </div>
+
+        <div class="local-sticky-stage">
+            <div class="dynamic-chart-box" id="ch4-pyramid">
+                <div class="dash-container-box">
+                    <div class="dash-header">
+                        <h3>718億先行動支方案納入與排除項目金額對比</h3>
+                        <p>左側為被排除經費（紅條），右側為被納入經費（藍條）</p>
+                    </div>
+
+                    <div class="pyramid-grid-bg-layer">
+                        <div class="bg-grid-side left-side">
+                            <div class="grid-v-line"></div>
+                            <div class="grid-v-line"></div>
+                            <div class="grid-v-line"></div>
+                            <div class="grid-v-line"></div>
+                        </div>
+                        <div class="grid-side-center"></div>
+                        <div class="bg-grid-side right-side">
+                            <div class="grid-v-line"></div>
+                            <div class="grid-v-line"></div>
+                            <div class="grid-v-line"></div>
+                            <div class="grid-v-line"></div>
+                        </div>
+                    </div>
+
+                    <div class="pyramid-title-row">
+                        <span>◄ 被排除計畫 (約299億)</span>
+                        <span>分類項目</span>
+                        <span>被納入計畫 (約718億) ►</span>
+                    </div>
+
+                    <div class="pyramid-align-row">
+                        <div class="bar-group left-bar-box">
+                            <div class="bar-rect rect-danger" style="width: 0%;"></div>
+                            <span class="val-num">0</span>
+                        </div>
+                        <div class="cat-item">地方財政與<br>大眾通勤補貼</div>
+                        <div class="bar-group right-bar-box">
+                            <div class="bar-rect rect-primary" style="width: 100%;"></div>
+                            <span class="val-num">399.35</span>
+                        </div>
+                    </div>
+
+                    <div class="pyramid-align-row">
+                        <div class="bar-group left-bar-box">
+                            <div class="bar-rect rect-danger" style="width: 16.17%;"></div>
+                            <span class="val-num">64.58</span>
+                        </div>
+                        <div class="cat-item">氣候調適、治水<br>與環保基建</div>
+                        <div class="bar-group right-bar-box">
+                            <div class="bar-rect rect-primary" style="width: 38.03%;"></div>
+                            <span class="val-num">151.88</span>
+                        </div>
+                    </div>
+
+                    <div class="pyramid-align-row">
+                        <div class="bar-group left-bar-box">
+                            <div class="bar-rect rect-danger" style="width: 10.15%;"></div>
+                            <span class="val-num">40.53</span>
+                        </div>
+                        <div class="cat-item">醫療與少子化對策</div>
+                        <div class="bar-group right-bar-box">
+                            <div class="bar-rect rect-primary" style="width: 29.84%;"></div>
+                            <span class="val-num">119.18</span>
+                        </div>
+                    </div>
+
+                    <div class="pyramid-align-row">
+                        <div class="bar-group left-bar-box">
+                            <div class="bar-rect rect-danger" style="width: 33.14%;"></div>
+                            <span class="val-num">132.34</span>
+                        </div>
+                        <div class="cat-item">戰略科技研發與國防升級</div>
+                        <div class="bar-group right-bar-box">
+                            <div class="bar-rect rect-primary" style="width: 4.94%;"></div>
+                            <span class="val-num">19.74</span>
+                        </div>
+                    </div>
+
+                    <div class="pyramid-align-row">
+                        <div class="bar-group left-bar-box">
+                            <div class="bar-rect rect-danger" style="width: 15.48%;"></div>
+                            <span class="val-num">61.83</span>
+                        </div>
+                        <div class="cat-item">其他<br>（建物整修、公務車汰換）</div>
+                        <div class="bar-group right-bar-box">
+                            <div class="bar-rect rect-primary" style="width: 6.89%;"></div>
+                            <span class="val-num">27.50</span>
+                        </div>
+                    </div>
+
+                    <div class="p-scale-axis-linear">
+                        <div class="axis-wrapper linear-ticks-left">
+                            <span>400</span><span>300</span><span>200</span><span>100</span><span>0</span>
+                        </div>
+                        <div class="axis-center-gap"></div>
+                        <div class="axis-wrapper linear-ticks-right">
+                            <span>0</span><span>100</span><span>200</span><span>300</span><span>400</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dynamic-chart-box" id="ch4-ranking-1">
+                <div class="ranking-container">
+                    <div class="ranking-header">
+                        <h3>718億先行動支方案：前10大聚焦項目排行榜</h3>
+                        <p class="ranking-subtitle">多聚焦於一般性補助、民生通勤與基礎建設改善（單位：億元）</p>
+                    </div>
+                    <div class="ranking-table">
+                        <div class="ranking-row top-1">
+                            <div class="rank-badge">1</div>
+                            <div class="project-info">
+                                <div class="project-name">直轄市及縣市財政均衡補助等經費</div>
+                                <div class="dept-tag">一般性補助款-其他</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">320.63</div>
+                                <div class="amount-bar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row top-2">
+                            <div class="rank-badge">2</div>
+                            <div class="project-info">
+                                <div class="project-name">TPASS行政院通勤月票執行計畫</div>
+                                <div class="dept-tag">一般性補助款-交通部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">59.40</div>
+                                <div class="amount-bar" style="width: 18.5%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row top-3">
+                            <div class="rank-badge">3</div>
+                            <div class="project-info">
+                                <div class="project-name">因應氣候變遷縣市管河川及排水整體改善計畫</div>
+                                <div class="dept-tag">經濟部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">35.11</div>
+                                <div class="amount-bar" style="width: 10.9%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">4</div>
+                            <div class="project-info">
+                                <div class="project-name">研發測試場域整建暨藥品國產自製能量建置計畫</div>
+                                <div class="dept-tag">經濟部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">34.40</div>
+                                <div class="amount-bar" style="width: 10.7%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">5</div>
+                            <div class="project-info">
+                                <div class="project-name">勞動部辦工保險生育給付差差額補助</div>
+                                <div class="dept-tag">勞動部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">29.57</div>
+                                <div class="amount-bar" style="width: 9.2%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">6</div>
+                            <div class="project-info">
+                                <div class="project-name">因應氣候變遷縣市管河川及排水整體改善計畫</div>
+                                <div class="dept-tag">一般性補助款-內政部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">28.73</div>
+                                <div class="amount-bar" style="width: 9.0%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">7</div>
+                            <div class="project-info">
+                                <div class="project-name">國家藥物韌性整備計畫</div>
+                                <div class="dept-tag">衛福部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">18.48</div>
+                                <div class="amount-bar" style="width: 5.8%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">8</div>
+                            <div class="project-info">
+                                <div class="project-name">AS-365N海豚型機隊升級中程計畫</div>
+                                <div class="dept-tag">內政部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">18.20</div>
+                                <div class="amount-bar" style="width: 5.7%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">9</div>
+                            <div class="project-info">
+                                <div class="project-name">TPASS行政院通勤月票執行計畫</div>
+                                <div class="dept-tag">交通部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">15.80</div>
+                                <div class="amount-bar" style="width: 4.9%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">10</div>
+                            <div class="project-info">
+                                <div class="project-name">提升國立大專校院建築物安全並加速改善老舊校舍整修及耐震經費</div>
+                                <div class="dept-tag">教育部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">15.00</div>
+                                <div class="amount-bar" style="width: 4.7%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dynamic-chart-box" id="ch4-ranking-2">
+                <div class="ranking-container">
+                    <div class="ranking-header">
+                        <h3>先行動支方案：部分被排除之工作計畫名單</h3>
+                        <p class="ranking-subtitle">多聚焦於AI前瞻建設、無人機研發與監察遷建工程（單位：億元）</p>
+                    </div>
+
+                    <div class="ranking-table">
+                        <div class="ranking-row top-1">
+                            <div class="rank-badge">1</div>
+                            <div class="project-info">
+                                <div class="project-name">全國循環專區試點暨新材料循環產業園區申請設置計畫</div>
+                                <div class="dept-tag">經濟部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">60.00</div>
+                                <div class="amount-bar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row top-2">
+                            <div class="rank-badge">2</div>
+                            <div class="project-info">
+                                <div class="project-name">提升戰備醫療能量設備整備等14案軍事投資計畫</div>
+                                <div class="dept-tag">國防部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">24.40</div>
+                                <div class="amount-bar" style="width: 40.6%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row top-3">
+                            <div class="rank-badge">3</div>
+                            <div class="project-info">
+                                <div class="project-name">法務部矯正署臺北看守所及臺北女子看守所遷建工程中長程個案計畫</div>
+                                <div class="dept-tag">法務部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">20.28</div>
+                                <div class="amount-bar" style="width: 33.8%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">4</div>
+                            <div class="project-info">
+                                <div class="project-name">臺灣新北地方法院土城司法園區購地計畫</div>
+                                <div class="dept-tag">司法院主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">20.15</div>
+                                <div class="amount-bar" style="width: 33.5%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">5</div>
+                            <div class="project-info">
+                                <div class="project-name">智慧機器人前瞻技術研發與共作平台建立</div>
+                                <div class="dept-tag">國科會主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">9.80</div>
+                                <div class="amount-bar" style="width: 16.3%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">6</div>
+                            <div class="project-info">
+                                <div class="project-name">無人載具產業發展統籌型計畫-亞創中心強化計畫</div>
+                                <div class="dept-tag">一般性補助款-內政部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">8.60</div>
+                                <div class="amount-bar" style="width: 14.3%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">7</div>
+                            <div class="project-info">
+                                <div class="project-name">智慧機器人關鍵技術及產業生態系建置計畫</div>
+                                <div class="dept-tag">一般性補助款-內政部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">7.35</div>
+                                <div class="amount-bar" style="width: 12.2%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">8</div>
+                            <div class="project-info">
+                                <div class="project-name">配合經濟部推動「無人載具(無人機及水面水下無人船)產業發展統籌型計畫」</div>
+                                <div class="dept-tag">一般性補助款-教育部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">6.23</div>
+                                <div class="amount-bar" style="width: 10.3%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">9</div>
+                            <div class="project-info">
+                                <div class="project-name">智慧政府數位化精進發展計畫</div>
+                                <div class="dept-tag">數發部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">5.07</div>
+                                <div class="amount-bar" style="width: 8.4%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-row">
+                            <div class="rank-badge">10</div>
+                            <div class="project-info">
+                                <div class="project-name">智慧雨林產業創生計畫</div>
+                                <div class="dept-tag">經濟部主管</div>
+                            </div>
+                            <div class="amount-wrapper">
+                                <div class="amount-value">4.52</div>
+                                <div class="amount-bar" style="width: 7.5%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="local-scroll-content">
+            <div class="step-scene" data-visual="pyramid">
+                <div class="story-card">
+                    <p>國民黨立法院黨團1月16日提出718億新興計畫先行動支案並逕付二讀，共涵蓋38項計畫。國民黨立委羅指強指出，動支案主要是針對地方民生急迫的一些新增計畫，或者是新興計畫裡面的一些支出專案。該案於3月6日通過。
+                    </p>
+                </div>
+            </div>
+
+            <div class="step-scene" data-visual="rank1">
+                <div class="story-card">
+                    <p>根據提案內容，718億先行動支方案多聚焦在對民眾的補助項目，或民生所需之項目。</p>
+                </div>
+            </div>
+
+            <div class="step-scene" data-visual="rank2">
+                <div class="story-card">
+                    <p>而被排除在先行動支方案的項目，則多是AI建設、無人機等工作計畫。</p>
+                </div>
+            </div>
+
+            <div class="step-scene is-centered" data-visual="none">
+                <div class="story-card">
+                    <p>除了排擠掉部分施政項目外，立院通過先行動支方案後預算能不能使用也是爭執焦點。審計部審計長陳瑞敏說明，預算法裡規定，如果有還沒完成審議、但經立法院先行同意動支的，是可以執行的。依據預算法第54條規定，總預算如未按時完成審議，新興資本支出及新增計畫可以依預算法第88條，或經立法院同意後後辦理。
+                    </p>
+                </div>
+            </div>
+
+            <div class="step-scene is-centered" data-visual="none">
+                <div class="story-card">
+                    <p>但是行政院回應，立法院此公決案史無前例，且「暫時同意動支」不符合憲法與預算法的規定。立法院未來審議整本中央政府總預算案時，依然可以刪除或凍結任何一筆新興計畫預算，造成預算執行的不確定性，立院應傾速審議整體總預算案。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="footer-cta">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 25px; color: var(--primary);">結語</h2>
+            <p
+                style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 20px; line-height: 2; font-weight: 500;">
+                隨著總預算付委，行政院也函請機關新興計畫預算執行作業，TPASS 2.0、生育給付等補助項目目前都已開始進行。
+            </p>
+            <p
+                style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 40px; line-height: 2; font-weight: 500;">
+                115年度總預算正在審議，在朝野協商及之後院會表決程序中又會出現哪些新議題，也請持續鎖定中央社網站相關報導。
+            </p>
+
+            <a href="database.html" class="cta-btn">
+                進入完整計畫預算資料庫 <span style="font-size: 1.5rem;">→</span>
+            </a>
+        </div>
+    </section>
+
     <script>
-        const PROXY_URL = 'https://corsproxy.io/?';
-        const TARGET_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS6ZFEMdgBFyC6O0Axmx7TvcckTzMoDCxrb5V_8gHJmyzBEXx-cLj6RtRWkyUUap-qiK_C2G-GwJFMJ/pub?gid=1922321201&single=true&output=csv';
+        // 修正：讓 JS 同時抓取第一章的舊卡片與第二章的新視差卡片
+        // 全範圍捕捉版：強制把網頁裡所有的舊卡片和新視差卡片通通抓進監聽器
+        const scenes = document.querySelectorAll('.step-scene, .gantt-trigger-scene, [data-bg]');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    scenes.forEach(s => s.classList.remove('is-active'));
+                    entry.target.classList.add('is-active');
 
-        const CATEGORY_CONFIG = {
-            "state": { name: "國務支出", icon: "🏛️", color: "#2c3e50", desc: "總統行使職權、國家安全會議運作。", total: "約 14 億元" },
-            "admin": { name: "行政支出", icon: "💼", color: "#2980b9", desc: "行政院及幕僚機關運作與政策規劃。", total: "約 69 億元" },
-            "legislative": { name: "立法支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 39 億元" },
-            "judiciary": { name: "司法支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 812 億元" },
-            "exam": { name: "考試支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 26 億元" },
-            "control": { name: "監察支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 30 億元" },
-            "civil": { name: "民政支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 726 億元" },
-            "police": { name: "警政支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 357 億元" },
-            "foreign": { name: "外交支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 415 億元" },
-            "finance": { name: "財務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 510 億元" },
-            "overseas": { name: "僑務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 26 億元" },
-            "defence": { name: "國防支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 5488 億元" },
-            "education": { name: "教育支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 3237 億元" },
-            "science": { name: "科學支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1817 億元" },
-            "culture": { name: "文化支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 513 億元" },
-            "agriculture": { name: "農業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1669 億元" },
-            "industry": { name: "工業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 522 億元" },
-            "transport": { name: "交通支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1622 億元" },
-            "service": { name: "其他經濟服務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 462 億元" },
-            "insurance": { name: "社會保險支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 6109 億元" },
-            "assistance": { name: "社會救助支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 88 億元" },
-            "welfare": { name: "福利服務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1416 億元" },
-            "employment": { name: "國民就業支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 20 億元" },
-            "medical": { name: "醫療保健支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 686 億元" },
-            "environment": { name: "環境保護支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 266 億元" },
-            "pension": { name: "退休撫卹給付支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1841 億元" },
-            "retirement": { name: "退休撫卹業務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 3.3 億元" },
-            "debt": { name: "債務付息支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 1059 億元" },
-            "repayment": { name: "還本付息事務支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 4.2 億元" },
-            "subsidy": { name: "專案補助支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 303 億元" },
-            "other": { name: "其他支出", icon: "⚖️", color: "#27ae60", desc: "立法院運作、法案審查與國會外交。", total: "約 81 億元" }
-        };
+                    const chapter = entry.target.closest('.chapter-section');
+                    if (chapter) {
+                        document.querySelectorAll('.chapter-section').forEach(c => c.classList.remove('is-active-chapter'));
+                        chapter.classList.add('is-active-chapter');
 
-        const CHART_COLORS = ['#3498db', '#e74c3c', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e', '#e67e22'];
-
-        let groupedData = {};
-        let allKeywords = [];
-        let historyStack = [];
-        let currentView = { step: 0 };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initApp();
-        });
-
-        function initApp() {
-            if (TARGET_SHEET_URL && TARGET_SHEET_URL.length > 5) {
-                const finalUrl = PROXY_URL + encodeURIComponent(TARGET_SHEET_URL);
-                Papa.parse(finalUrl, {
-                    download: true, header: true,
-                    complete: function(results) {
-                        processData(results.data);
-                        renderCategories();
-                        renderRandomKeywords('hero-random-keywords');
-                        finishLoading();
-                    },
-                    error: function(err) {
-                        console.error("CSV Load Error", err);
-                        useDemoData();
-                    }
-                });
-            } else {
-                useDemoData();
-            }
-        }
-
-        function finishLoading() {
-            const overlay = document.getElementById('loading-overlay');
-            overlay.style.opacity = '0';
-            setTimeout(() => overlay.style.display = 'none', 500);
-        }
-
-        function useDemoData() {
-            // Default demo data in case of error
-            const demoRows = [
-                { category: 'state', title: '機關基本運作', agency: '總統府', amount: '10.8 億元', details: '古蹟修繕;資安維護', review_status: '照案通過', sub_breakdown: '人員:700000; 古蹟:300000', cut_frozen_val: '100, 200', review_stats: '100,50; 80,50; 80,50', details_table: '水電|刪100', general_cut: '', legis_cut: '王大明', legis_freeze: '李四' }
-            ];
-            processData(demoRows);
-            renderCategories();
-            renderRandomKeywords('hero-random-keywords');
-            finishLoading();
-        }
-
-        function processData(rows) {
-            groupedData = {};
-            allKeywords = [];
-            for (let key in CATEGORY_CONFIG) groupedData[key] = {};
-
-            rows.forEach(row => {
-                if (!row.category) return;
-                if (!groupedData[row.category]) groupedData[row.category] = {};
-
-                const detailsArray = (row.details && typeof row.details === 'string') ? row.details.split(/[;；]+/) : [];
-                if (detailsArray.length === 0 && row.title) detailsArray.push(row.title);
-
-                let breakdown = [];
-                if (row.sub_breakdown) {
-                    const parts = row.sub_breakdown.split(/[;；]+/);
-                    parts.forEach(part => {
-                        const [name, valStr] = part.split(/[:：]/);
-                        if (name && valStr) {
-                            const val = parseInt(valStr.replace(/,/g, '').trim());
-                            if (!isNaN(val)) breakdown.push({ name: name.trim(), value: val });
+                        // 1. 第一章時間軸邏輯
+                        if (chapter.id === 'chapter-1') {
+                            const progressVal = entry.target.getAttribute('data-progress');
+                            const nodesAttr = entry.target.getAttribute('data-nodes');
+                            if (progressVal && nodesAttr) {
+                                const activeNodes = nodesAttr.split(',').map(Number);
+                                document.getElementById('timeline-progress-bar').style.height = progressVal + '%';
+                                document.querySelectorAll('#chapter-1 .time-node').forEach(node => node.classList.remove('node-active', 'node-highlight'));
+                                activeNodes.forEach(num => {
+                                    const node = document.getElementById(`t-node-${num}`);
+                                    if (node) {
+                                        if (num >= 8) node.classList.add('node-highlight');
+                                        else node.classList.add('node-active');
+                                    }
+                                });
+                            }
                         }
-                    });
+                        // 3. 第三章比例圖與圓餅圖切換邏輯
+                        if (chapter.id === 'chapter-3') {
+                            const visualType = entry.target.getAttribute('data-visual');
+                            const totalBox = document.getElementById('budget-total-box');
+                            const donutBox = document.getElementById('budget-donut-box');
+
+                            if (visualType === 'total') {
+                                totalBox.classList.add('visible-box');
+                                donutBox.classList.remove('visible-box');
+                            } else if (visualType === 'donut') {
+                                totalBox.classList.remove('visible-box');
+                                donutBox.classList.add('visible-box');
+                            } else if (visualType === 'none') {
+                                totalBox.classList.remove('visible-box');
+                                donutBox.classList.remove('visible-box');
+                            }
+                        }
+
+                        // 4. 處理第四章：網格儀表板、排行榜一（聚焦）、排行榜二（排除）精準切換
+                        if (chapter.id === 'chapter-4') {
+                            const visualType = entry.target.getAttribute('data-visual');
+                            const dashBox = document.getElementById('ch4-pyramid');
+                            const rank1Box = document.getElementById('ch4-ranking-1');
+                            const rank2Box = document.getElementById('ch4-ranking-2');
+
+                            if (visualType === 'dashboard' || visualType === 'pyramid') {
+                                dashBox.classList.add('visible-box');
+                                rank1Box.classList.remove('visible-box');
+                                rank2Box.classList.remove('visible-box');
+                            } else if (visualType === 'rank1') {
+                                dashBox.classList.remove('visible-box');
+                                rank1Box.classList.add('visible-box');
+                                rank2Box.classList.remove('visible-box');
+                            } else if (visualType === 'rank2') {
+                                dashBox.classList.remove('visible-box');
+                                rank1Box.classList.remove('visible-box');
+                                rank2Box.classList.add('visible-box');
+                            } else {
+                                dashBox.classList.remove('visible-box');
+                                rank1Box.classList.remove('visible-box');
+                                rank2Box.classList.remove('visible-box');
+                            }
+                        }
+                    }
                 }
-
-                detailsArray.forEach(d => {
-                    const keyword = d.trim();
-                    if (!keyword) return;
-
-                    if (!allKeywords.includes(keyword)) allKeywords.push(keyword);
-
-                    if (!groupedData[row.category][keyword]) groupedData[row.category][keyword] = [];
-
-                    const planObj = {
-                        title: row.title,
-                        agency: row.agency,
-                        amount: row.amount,
-                        reviewStatus: row.review_status || '',
-                        outcome: row.outcome || '',
-                        breakdown: breakdown, 
-                        cutFrozenVal: row.cut_frozen_val || '0,0',
-                        reviewStats: row.review_stats || '0,0;0,0;0,0',
-                        detailsTable: row.details_table || '',
-                        generalCut: row.general_cut || '',
-                        legisCut: row.legis_cut || '',
-                        legisFreeze: row.legis_freeze || ''
-                    };
-
-                    const exists = groupedData[row.category][keyword].some(p => p.title === planObj.title && p.agency === planObj.agency);
-                    if (!exists) groupedData[row.category][keyword].push(planObj);
-                });
             });
-        }
+        }, { rootMargin: '-20% 0px -40% 0px', threshold: 0.1 });
 
-        function getCategoryForKeyword(kw) {
-            for(let cat in groupedData) {
-                if(groupedData[cat][kw]) return cat;
-            }
-            return null;
-        }
+        scenes.forEach(scene => observer.observe(scene));
+        // =======================================================
+        // 全新重構：第二章獨立物理滾動監聽器 (終極百分比放行版)
+        // =======================================================
+        window.addEventListener('scroll', () => {
+            const chapter2 = document.getElementById('chapter-2-rebuilt');
+            const stage = document.getElementById('gantt-stage-rebuilt');
+            const ganttBox = document.getElementById('backdrop-gantt-rebuilt');
+            const imagesBox = document.getElementById('backdrop-images-rebuilt');
 
-        // ================= NAVIGATION SYSTEM =================
+            if (!chapter2 || !stage || !ganttBox || !imagesBox) return;
 
-        function pushHistory() {
-            historyStack.push(JSON.parse(JSON.stringify(currentView)));
-        }
+            // 1. 取得第二章在整個網頁跑道中的物理邊界位置
+            const rect = chapter2.getBoundingClientRect();
 
-        function handleGlobalBack() {
-            if (historyStack.length === 0) {
-                goToStep(0, false);
-                return;
-            }
-            const prevState = historyStack.pop();
-            restoreState(prevState);
-        }
+            // 2. 💡 寬容開關：只要第二章的頂部滑進螢幕，且屁股還沒完全離開螢幕頂，就全面放行舞台！
+            if (rect.top <= 0 && rect.bottom >= 0) {
+                stage.classList.add('stage-active-rebuilt-now'); // 點亮 Fixed 舞台
 
-        function restoreState(state) {
-            currentView = state;
-            
-            if (state.step === 0) {
-                goToStep(0, false);
-            } else if (state.step === 1) {
-                goToStep(1, false);
-            } else if (state.step === 2) {
-                selectCategory(state.catKey, false);
-            } else if (state.step === 3) {
-                const plans = groupedData[state.catKey][state.kw];
-                renderStep3List(state.kw, plans, false, state.catKey); 
-            } else if (state.step === 4) {
-                renderStep4(state.plan, false);
-            }
-        }
+                // 3. 💡 百分比分流：計算讀者目前「肉眼瀏覽這一章」的精準進度百分比 (0% ~ 100%)
+                const totalScrollableHeight = rect.height - window.innerHeight;
+                const scrolledDistance = -rect.top;
+                const scrollPercent = (scrolledDistance / totalScrollableHeight) * 100;
 
-        // ================= ACTIONS =================
+                // 4. 重置所有階梯劇本 Class（包含新加入的卡片編號）
+                chapter2.classList.remove('rebuilt-step-2', 'rebuilt-step-3', 'rebuilt-step-4', 'rebuilt-step-5', 'rebuilt-step-6', 'rebuilt-step-7', 'rebuilt-step-8', 'rebuilt-step-9');
+                ganttBox.classList.remove('box-visible-rebuilt-now');
+                imagesBox.classList.remove('box-visible-rebuilt-now');
 
-        function goToStep(step, isPush = true) {
-            if(isPush) {
-                if(document.querySelector('.step-section.active')) {
-                    pushHistory();
+                // 保持 Bar 寬度控制（略）
+                const allBars = document.querySelectorAll('#chapter-2-rebuilt .gantt-bar-rebuilt');
+                allBars.forEach(bar => { bar.style.setProperty('width', '0', 'important'); });
+
+                // 5. 🎬 精密九段式跑道分流 (0% - 100%)
+                if (scrollPercent < 12) {
+                    // 卡片 1 (引言)
                 }
-            }
-            
-            currentView = { step: step };
-
-            document.querySelectorAll('.step-section').forEach(el => {
-                el.classList.remove('active');
-                setTimeout(() => { if(!el.classList.contains('active')) el.style.display = 'none'; }, 500);
-            });
-            const target = document.getElementById(`step-${step}`);
-            if(target) {
-                target.style.display = 'block';
-                setTimeout(() => target.classList.add('active'), 10);
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            }
-            updateBreadcrumbs();
-        }
-
-        function selectCategory(catKey, isPush = true) {
-            if (!groupedData[catKey]) { alert("無此類別資料"); return; }
-            
-            if(isPush) pushHistory();
-
-            currentView = { step: 2, catKey: catKey };
-
-            const config = CATEGORY_CONFIG[catKey];
-            document.getElementById('selected-category-name').innerText = config.name;
-            
-            const container = document.getElementById('keywords-container');
-            container.innerHTML = ''; 
-            Object.keys(groupedData[catKey]).forEach(keyword => {
-                const plans = groupedData[catKey][keyword];
-                const count = plans.length;
-                const btn = document.createElement('button');
-                btn.className = `btn keyword-btn`;
-                let html = `${keyword} <span class="badge bg-warning text-dark ms-1 rounded-pill">${count}</span>`;
-                btn.innerHTML = html;
-                btn.onclick = () => renderStep3List(keyword, plans);
-                container.appendChild(btn);
-            });
-
-            switchSection(2);
-            updateBreadcrumbs();
-        }
-
-        // ★★★ Re-added renderCategories Function ★★★
-        function renderCategories() {
-            const container = document.getElementById('category-container');
-            if(!container) return;
-            container.innerHTML = '';
-            for (const [key, config] of Object.entries(CATEGORY_CONFIG)) {
-                const col = document.createElement('div');
-                col.className = 'col-md-4 col-12';
-                col.innerHTML = `
-                    <div class="card category-card">
-                        <div class="category-header" style="background-color: ${config.color};">
-                            <div><div class="cat-icon">${config.icon}</div>${config.name}</div>
-                        </div>
-                        <div class="card-body p-4">
-                            <p class="card-text text-muted">${config.desc}</p>
-                            <hr>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">總預算</small>
-                                <span class="fw-bold text-dark">${config.total}</span>
-                            </div>
-                        </div>
-                    </div>`;
-                col.querySelector('.category-card').onclick = () => selectCategory(key);
-                container.appendChild(col);
-            }
-        }
-
-        function renderStep3List(keyword, plans, isPush = true, explicitCatKey = null) {
-            if(isPush) pushHistory();
-
-            let catKey = explicitCatKey || currentView.catKey;
-            if(!catKey) {
-                catKey = getCategoryForKeyword(keyword);
-            }
-
-            currentView = { step: 3, catKey: catKey, kw: keyword };
-
-            document.getElementById('list-view-title').innerText = keyword;
-            document.getElementById('list-count').innerText = plans.length;
-            
-            const backBtn = document.getElementById('btn-back-step3');
-            backBtn.innerText = '← 回上一頁';
-
-            const container = document.getElementById('plan-list-container');
-            container.innerHTML = '';
-
-            plans.forEach(plan => {
-                let chartHtml = '';
-                let legendHtml = '';
-                if (plan.breakdown && plan.breakdown.length > 0) {
-                    const totalVal = plan.breakdown.reduce((sum, item) => sum + item.value, 0);
-                    let bars = '';
-                    let legends = '';
-                    plan.breakdown.forEach((item, idx) => {
-                        const percent = (item.value / totalVal) * 100;
-                        const color = CHART_COLORS[idx % CHART_COLORS.length];
-                        bars += `<div class="budget-bar-segment" style="width: ${percent}%; background-color: ${color};" title="${item.name}: ${percent.toFixed(1)}%"></div>`;
-                        legends += `<div class="legend-item"><div class="legend-color" style="background-color: ${color};"></div><span>${item.name}</span></div>`;
-                    });
-                    chartHtml = `<div class="budget-bar-container" style="height:10px;">${bars}</div>`;
-                    legendHtml = `<div class="budget-legend">${legends}</div>`;
+                else if (scrollPercent >= 12 && scrollPercent < 24) {
+                    // 卡片 2 (網格)
+                    ganttBox.classList.add('box-visible-rebuilt-now');
+                    chapter2.classList.add('rebuilt-step-2');
                 }
+                else if (scrollPercent >= 24 && scrollPercent < 36) {
+                    // 卡片 3 (Bar 長出)
+                    ganttBox.classList.add('box-visible-rebuilt-now');
+                    chapter2.classList.add('rebuilt-step-2', 'rebuilt-step-3');
+                    allBars.forEach(bar => { bar.style.setProperty('width', 'var(--w)', 'important'); });
+                }
+                else if (scrollPercent >= 36 && scrollPercent < 48) {
+                    // 卡片 4 (紅線與深灰區)
+                    ganttBox.classList.add('box-visible-rebuilt-now');
+                    chapter2.classList.add('rebuilt-step-2', 'rebuilt-step-3', 'rebuilt-step-4');
+                    allBars.forEach(bar => { bar.style.setProperty('width', 'var(--w)', 'important'); });
+                }
+                else if (scrollPercent >= 48 && scrollPercent < 60) {
+                    // 卡片 5 (蔡馬高亮)
+                    ganttBox.classList.add('box-visible-rebuilt-now');
+                    chapter2.classList.add('rebuilt-step-2', 'rebuilt-step-3', 'rebuilt-step-4', 'rebuilt-step-5');
+                    allBars.forEach(bar => { bar.style.setProperty('width', 'var(--w)', 'important'); });
+                }
+                else if (scrollPercent >= 60 && scrollPercent < 72) {
+                    // 卡片 6 (96年高亮)
+                    ganttBox.classList.add('box-visible-rebuilt-now');
+                    chapter2.classList.add('rebuilt-step-2', 'rebuilt-step-3', 'rebuilt-step-4', 'rebuilt-step-6');
+                    allBars.forEach(bar => { bar.style.setProperty('width', 'var(--w)', 'important'); });
+                }
+                else if (scrollPercent >= 72 && scrollPercent < 82) {
+                    // 📸 進入卡片 7 跑道：甘特圖退場，第一張歷史檔案照片在中央浮現
+                    imagesBox.classList.add('box-visible-rebuilt-now');
+                    chapter2.classList.add('rebuilt-step-7');
+                }
+                else if (scrollPercent >= 82 && scrollPercent < 92) {
+                    // 卡片 8 階段：中央展示兩張相框輪播
+                    imagesBox.classList.add('box-visible-rebuilt-now');
+                    chapter2.classList.add('rebuilt-step-8');
+                }
+                else if (scrollPercent >= 92 && scrollPercent <= 100) {
+                    // 卡片 9 (結局大結局文字)
+                    ganttBox.classList.remove('box-visible-rebuilt-now');
+                    imagesBox.classList.add('box-visible-rebuilt-now'); // 點亮歷史照片大盒子 (不讓它閃退消失！)
+                    chapter2.classList.add('rebuilt-step-9'); // 點亮靠左的結局大照片
 
-                let statusHtml = plan.reviewStatus ? `<span class="tag-status">${plan.reviewStatus}</span>` : '';
-                
-                const col = document.createElement('div');
-                col.className = 'col-md-6 col-lg-4'; 
-                col.innerHTML = `
-                    <div class="card shadow-sm h-100 plan-block">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="tag-agency">${plan.agency}</span>
-                                ${statusHtml}
-                            </div>
-                            <h5 class="card-title fw-bold mb-3">${plan.title}</h5>
-                            <div class="d-flex justify-content-end align-items-center mb-2">
-                                <small class="text-muted me-2">預算金額</small>
-                                <span class="plan-amount">${plan.amount}</span>
-                            </div>
-                            ${chartHtml}
-                            ${legendHtml}
-                        </div>
-                    </div>
-                `;
-                col.querySelector('.plan-block').onclick = () => renderStep4(plan);
-                container.appendChild(col);
-            });
-
-            switchSection(3);
-            updateBreadcrumbs();
-        }
-
-        function renderStep4(plan, isPush = true) {
-            if(isPush) pushHistory();
-
-            currentView = { 
-                step: 4, 
-                catKey: currentView.catKey,
-                kw: currentView.kw, 
-                plan: plan 
-            };
-
-            document.getElementById('d-agency').innerText = plan.agency;
-            document.getElementById('d-title').innerText = plan.title;
-            document.getElementById('d-amount').innerText = plan.amount;
-
-            const outcomeText = document.getElementById('d-outcome-text');
-            const outcomeToggle = document.getElementById('d-outcome-toggle');
-            outcomeText.classList.remove('expanded');
-            outcomeText.classList.add('collapsed');
-            outcomeToggle.innerText = '▼ 展開完整內容';
-            
-            if (plan.outcome && plan.outcome.length > 0) {
-                outcomeText.innerText = plan.outcome;
-                if(plan.outcome.length < 60) {
-                    outcomeToggle.style.display = 'none';
-                    outcomeText.classList.remove('collapsed');
-                } else {
-                    outcomeToggle.style.display = 'inline-block';
+                    // 手動點亮卡片，確保倒滾時能正確激活最後字卡
+                    const finalCard = document.querySelector('.gantt-card-rebuilt[data-rebuilt-step="9"]');
+                    if (finalCard) {
+                        finalCard.classList.add('is-active');
+                    }
+                }
+                else {
+                    // 完全滑開這一章，關燈，交還父容器控制 (略)
+                    ganttBox.classList.remove('box-visible-rebuilt-now');
+                    imagesBox.classList.remove('box-visible-rebuilt-now');
+                    chapter2.classList.remove('rebuilt-step-2', 'rebuilt-step-3', 'rebuilt-step-4', 'rebuilt-step-5', 'rebuilt-step-6', 'rebuilt-step-7', 'rebuilt-step-8', 'rebuilt-step-9');
                 }
             } else {
-                outcomeText.innerText = "尚無詳細計畫內容。";
-                outcomeToggle.style.display = 'none';
-                outcomeText.classList.remove('collapsed');
+                // 滾出第二章範圍，徹底關燈，不遮擋上下章節
+                stage.classList.remove('stage-active-rebuilt-now');
             }
-
-            const cfVals = plan.cutFrozenVal.split(/[,，]/).map(s => parseInt(s.trim()) || 0);
-            const cutVal = cfVals[0] || 0;
-            const freezeVal = cfVals[1] || 0;
-            let totalVal = parseInt(plan.amount.replace(/[^0-9]/g, ''));
-            if(plan.amount.includes('億')) totalVal *= 100000000;
-            else if(plan.amount.includes('萬')) totalVal *= 10000;
-            else totalVal = cutVal + freezeVal + 100000; 
-
-            const cutPct = Math.min((cutVal / totalVal) * 100, 100);
-            const freezePct = Math.min((freezeVal / totalVal) * 100, 100);
-            const remainPct = Math.max(0, 100 - cutPct - freezePct);
-
-            const barContainer = document.getElementById('d-status-bar');
-            barContainer.innerHTML = `
-                <div class="status-seg remain" style="width: ${remainPct}%">${remainPct > 10 ? remainPct.toFixed(1)+'%' : ''}</div>
-                <div class="status-seg freeze" style="width: ${freezePct}%">${freezePct > 5 ? '凍'+freezePct.toFixed(1)+'%' : ''}</div>
-                <div class="status-seg cut" style="width: ${cutPct}%">${cutPct > 5 ? '刪'+cutPct.toFixed(1)+'%' : ''}</div>
-            `;
-
-            const stages = plan.reviewStats.split(/[;；]/);
-            const stageNames = ['委員會', '黨團協商', '院會'];
-            const chartWrapper = document.getElementById('d-chart-wrapper');
-            chartWrapper.innerHTML = '';
-            let maxVal = 1;
-            stages.forEach(s => {
-                const parts = s.split(/[,，]/).map(v=>parseInt(v)||0);
-                if(parts[0] > maxVal) maxVal = parts[0];
-                if(parts[1] > maxVal) maxVal = parts[1];
-            });
-            stages.forEach((s, idx) => {
-                if(idx > 2) return;
-                const parts = s.split(/[,，]/).map(v=>parseInt(v)||0); 
-                const cVal = parts[0];
-                const fVal = parts[1];
-                const cH = (cVal / maxVal) * 100;
-                const fH = (fVal / maxVal) * 100; 
-                const col = document.createElement('div');
-                col.className = 'chart-col';
-                col.innerHTML = `
-                    <div class="bar-group">
-                        <div class="v-bar cut" style="height:${cH}%">${cH > 5 ? `<span class="bar-val">${cVal}</span>` : ''}</div>
-                        <div class="v-bar freeze" style="height:${fH}%">${fH > 5 ? `<span class="bar-val">${fVal}</span>` : ''}</div>
-                    </div>
-                    <div class="bar-label">${stageNames[idx]}</div>
-                `;
-                chartWrapper.appendChild(col);
-            });
-
-            const tbody = document.getElementById('d-details-table-body');
-            tbody.innerHTML = '';
-            const detailRows = plan.detailsTable.split(/[;；]/);
-            detailRows.forEach(rowStr => {
-                if(!rowStr.trim()) return;
-                const cols = rowStr.split(/[|｜]/);
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td class="fw-bold text-primary">${cols[0]}</td><td>${cols[1] || ''}</td>`;
-                tbody.appendChild(tr);
-            });
-
-            const genCutDiv = document.getElementById('d-general-cut');
-            if(plan.generalCut) {
-                genCutDiv.innerText = plan.generalCut;
-                genCutDiv.classList.remove('d-none');
-            } else {
-                genCutDiv.classList.add('d-none');
-            }
-
-            const renderTags = (containerId, str, cssClass) => {
-                const container = document.getElementById(containerId);
-                container.innerHTML = '';
-                if(!str) { container.innerHTML = '<span class="text-muted small">無</span>'; return; }
-                const names = str.split(/[,，、]/);
-                names.forEach(n => {
-                    if(!n.trim()) return;
-                    const tag = document.createElement('span');
-                    tag.className = `legis-tag ${cssClass}`;
-                    tag.innerText = n.trim();
-                    container.appendChild(tag);
-                });
-            };
-            renderTags('d-legis-cut', plan.legisCut, 'cut');
-            renderTags('d-legis-freeze', plan.legisFreeze, 'freeze');
-
-            renderRandomKeywords('step4-random-keywords');
-
-            switchSection(4);
-            updateBreadcrumbs();
-        }
-
-        function renderRandomKeywords(containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            if (allKeywords.length === 0) return;
-            const shuffled = allKeywords.sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 3);
-            selected.forEach(kw => {
-                const btn = document.createElement('button');
-                btn.className = 'btn-quick-kw'; 
-                if(containerId === 'step4-random-keywords') {
-                    btn.className = 'btn btn-outline-secondary rounded-pill me-2 mb-2';
-                }
-                btn.innerText = kw;
-                
-                const targetCat = getCategoryForKeyword(kw);
-                btn.onclick = () => {
-                    if (targetCat) {
-                        const targetPlans = groupedData[targetCat][kw];
-                        renderStep3List(kw, targetPlans, true, targetCat); 
-                    } else { alert("無法找到此關鍵字"); }
-                };
-                container.appendChild(btn);
-            });
-        }
-
-        function switchSection(stepNum) {
-            document.querySelectorAll('.step-section').forEach(el => {
-                el.classList.remove('active');
-                setTimeout(() => { if(!el.classList.contains('active')) el.style.display = 'none'; }, 500);
-            });
-            const target = document.getElementById(`step-${stepNum}`);
-            if(target) {
-                target.style.display = 'block';
-                setTimeout(() => target.classList.add('active'), 10);
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            }
-        }
-
-        function toggleOutcome() {
-            const text = document.getElementById('d-outcome-text');
-            const btn = document.getElementById('d-outcome-toggle');
-            if (text.classList.contains('collapsed')) {
-                text.classList.remove('collapsed');
-                text.classList.add('expanded');
-                btn.innerText = '▲ 收合內容';
-            } else {
-                text.classList.remove('expanded');
-                text.classList.add('collapsed');
-                btn.innerText = '▼ 展開完整內容';
-            }
-        }
-
-        function updateBreadcrumbs() {
-            const nav = document.getElementById('breadcrumb-nav');
-            const list = document.getElementById('breadcrumb-list');
-            list.innerHTML = '';
-
-            if(currentView.step === 0) { nav.style.display = 'none'; return; }
-            nav.style.display = 'block';
-
-            let homeLi = document.createElement('li');
-            homeLi.className = 'breadcrumb-item';
-            homeLi.innerHTML = '<a onclick="goToStep(0)">首頁</a>';
-            list.appendChild(homeLi);
-
-            if(currentView.step >= 1) {
-                let catLi = document.createElement('li');
-                catLi.className = 'breadcrumb-item';
-                if(currentView.step === 1) { catLi.classList.add('active'); catLi.innerText = '選擇類別'; }
-                else { 
-                    const catName = (currentView.catKey && CATEGORY_CONFIG[currentView.catKey]) ? CATEGORY_CONFIG[currentView.catKey].name : '類別';
-                    catLi.innerHTML = `<a onclick="goToStep(1)">${catName}</a>`; 
-                }
-                list.appendChild(catLi);
-            }
-
-            if(currentView.step >= 2) {
-                let kwLi = document.createElement('li');
-                kwLi.className = 'breadcrumb-item';
-                if(currentView.step === 2) { kwLi.classList.add('active'); kwLi.innerText = '選擇關鍵字'; }
-                else { 
-                    kwLi.innerHTML = `<a onclick="selectCategory('${currentView.catKey}')">${currentView.kw || '關鍵字'}</a>`; 
-                }
-                list.appendChild(kwLi);
-            }
-
-            if(currentView.step >= 3) {
-                let listLi = document.createElement('li');
-                listLi.className = 'breadcrumb-item';
-                if(currentView.step === 3) { listLi.classList.add('active'); listLi.innerText = '計畫清單'; }
-                else { 
-                    listLi.innerHTML = `<a onclick="renderStep3List('${currentView.kw}', groupedData['${currentView.catKey}']['${currentView.kw}'], true, '${currentView.catKey}')">計畫清單</a>`;
-                }
-                list.appendChild(listLi);
-            }
-
-            if(currentView.step === 4) {
-                let detailLi = document.createElement('li');
-                detailLi.className = 'breadcrumb-item active';
-                detailLi.innerText = '詳細內容';
-                list.appendChild(detailLi);
-            }
-        }
-
-        function goToStep(step) {
-            pushHistory();
-            currentView = { step: step };
-            switchSection(step);
-            updateBreadcrumbs();
-        }
+        });
     </script>
 </body>
+
 </html>
