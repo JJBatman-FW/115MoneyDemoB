@@ -42,12 +42,20 @@
             background-color: var(--bg-deep);
             color: var(--text-main);
             line-height: 1.75;
+            width: 100%;
+            /* 🎯 確保主體寬度鎖死 */
             overflow-x: hidden;
+            /* 🎯 剛性切除任何橫向溢出 */
+            position: relative;
         }
 
         /* --- Hero 序章區塊 --- */
         .hero-section {
             height: 100vh;
+            width: 100%;
+            /* 🎯 強制鎖定寬度為純 100% */
+            overflow: hidden;
+            /* 🎯 剛性切除任何可能往右頂出去的隱形元素，防止右側露白 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,7 +64,6 @@
             padding: 20px;
             position: relative;
             background: linear-gradient(180deg, rgba(245, 247, 250, 0.5) 0%, var(--bg-deep) 90%);
-            /* 改為淺色微漸層 */
         }
 
         .hero-title {
@@ -1001,7 +1008,7 @@
             /* 針對除了第一張以外的卡片 */
             .gantt-scroll-content-rebuilt .gantt-card-rebuilt:not(:first-child) {
                 /* 例如往右推 100px，數值可依需求調整 */
-                margin-left: 50% !important;
+                margin-left: 40% !important;
                 /* 若需調整卡片寬度以適應右移，可視情況加入例如
     max-width: calc(100% - 100px) !important; 
     */
@@ -1813,12 +1820,9 @@
             <span>卡關逾200天才付委、718億先行動支有何隱憂</span>
         </h1>
         <p
-            style="font-size: 1.15rem; max-width: 750px; color: var(--text-muted); text-align: justify; line-height: 1.8;">
+            style="font-size: 1.15rem; max-width: 750px; margin: 0 auto 20px auto; color: var(--text-muted); text-align: justify; line-height: 1.8;">
             115年度總預算審查在115年4月21日付委。距離114年9月30日行政院函請立法院審議已過203天。這是近年總預算預算審查最晚進行的一次，也對政府施政產生影響，2992億新興計畫無法動支，TPASS、生育給付等補助無法順利發放。
         </p>
-        <div class="hero-meta">
-            更新時間：2026/05/25 &nbsp;|&nbsp; 記者：預算分析組 &nbsp;|&nbsp; 中央社深度報導
-        </div>
         <div class="scroll-indicator">向下捲動探索</div>
     </section>
 
@@ -1826,11 +1830,13 @@
         <div class="chapter-intro"
             style="max-width: 800px; margin: 0 auto; padding: 100px 20px 60px 20px; text-align: center; position: relative; z-index: 3;">
             <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
-                <span style="font-size: 1.2rem; display: block; margin-bottom: 10px; color: var(--accent);">第一章</span>
                 為什麼今年這麼晚才審
             </h2>
-            <p>
-                中央政府總預算是政府施政用錢的依據，在「預算法」中有規定審議時程，原則上須在預算執行年度開始前一個月完成審議。如果來不及在時限內完成，依預算法第54條，政府可依上年度標準繼續執行既有業務，不過新增計畫與部分預備金，原則上須待預算通過才能動用。
+            <p
+                style="font-size: 1.35rem; line-height: 2; font-weight: 500; color: var(--text-main); max-width: 750px; margin: 0 auto;">
+                <span style="display: block; text-align: justify; width: 100%;">
+                    中央政府總預算是政府施政用錢的依據，在「預算法」中有規定審議時程，原則上須在預算執行年度開始前一個月完成審議。如果來不及在時限內完成，依預算法第54條，政府可依上年度標準繼續執行既有業務，不過新增計畫與部分預備金，原則上須待預算通過才能動用。
+                </span>
             </p>
         </div>
 
@@ -2161,26 +2167,30 @@
                 <div class="history-images-container">
                     <div class="history-img-frame">
                         <img src="budget96001.jpg" alt="陳水扁時期預算案審議">
-                        <div class="img-caption">96年度預算歷史檔案 01</div>
+                        <div class="img-caption">民國96年5月11日，民進黨立委為通過總預算案，聚眾佔據議場主席台，將立法院長王金平團團包圍。</div>
                     </div>
                     <div class="history-img-frame">
                         <img src="budget96002.jpg" alt="朝小野大政治攻防">
-                        <div class="img-caption">96年度預算歷史檔案 02</div>
+                        <div class="img-caption">民國96年5月11日，立法院處理「中央選舉委員會組織法早案」及總預算案，藍、綠立委舉標語互相指控。</div>
                     </div>
                     <div class="history-img-frame">
                         <img src="budget003.jpg" alt="大結局照片：內閣改組與預算退回">
-                        <div class="img-caption">歷史照片：預算退回與內閣改組</div>
+                        <div class="img-caption">過去三次總預算退回重編都是因為行政院長請辭，分別發生在民國89年唐飛請辭、99年劉兆玄請辭及107年林全請辭。</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="gantt-scroll-content-rebuilt">
+            <div class="chapter-intro"
+                style="max-width: 800px; margin: 0 auto; padding: 100px 20px 40px 20px; text-align: center; position: relative; z-index: 3;">
+                <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
+                    不是只有今年晚，但今年最極端
+                </h2>
+            </div>
+
             <div class="gantt-card-rebuilt" data-rebuilt-step="1">
                 <div class="story-card">
-                    <h2><span
-                            style="font-size: 1.2rem; display: block; margin-bottom: 10px; color: var(--accent);">第二章</span>不是只有今年晚，但今年最極端
-                    </h2>
                     <p>回顧歷年審查歷程，在預算執行年度開始前就完成審查的例子並不常見。</p>
                 </div>
             </div>
@@ -2227,13 +2237,16 @@
     </section>
 
     <section id="chapter-3-rebuilt" class="scroll-story-rebuilt">
-        <div class="chapter-intro-header-rebuilt"
-            style="max-width: 800px; margin: 0 auto; padding: 100px 20px 40px 20px; text-align: center;">
-            <h2 style="font-size: 1.2rem; color: #0d9488; font-weight: bold; margin-bottom: 10px;">第三章</h2>
-            <h1 style="font-size: 2.5rem; color: #1e293b; font-weight: 800; margin-bottom: 20px;">晚審影響新興預算無法動支</h1>
+        <div class="chapter-intro"
+            style="max-width: 800px; margin: 0 auto; padding: 100px 20px 40px 20px; text-align: center; position: relative; z-index: 3;">
+            <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
+                晚審影響新興預算無法動支
+            </h2>
             <p
-                style="font-size: 1.2rem; color: #475569; border-left: 4px solid #0d9488; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: left;">
-                前述提到，受預算法規定，在總預算未審議前，新興計畫及設備原則上不能動用。
+                style="font-size: 1.35rem; line-height: 2; font-weight: 500; color: var(--text-main); max-width: 750px; margin: 0 auto;">
+                <span style="display: block; text-align: justify; width: 100%;">
+                    前述提到，受預算法規定，在總預算未審議前，新興計畫及設備原則上不能動用。
+                </span>
             </p>
         </div>
 
@@ -2310,19 +2323,18 @@
         <div class="chapter-intro"
             style="max-width: 800px; margin: 0 auto; padding: 100px 20px 40px 20px; text-align: center;">
             <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
-                <span style="font-size: 1.2rem; display: block; margin-bottom: 10px; color: var(--accent);">第四章</span>
                 在野提718億新興計畫方案
             </h2>
         </div>
 
         <div
-            style="max-width: 700px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 50px;">
+            style="max-width: 700px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 60px;">
 
-            <div style="display: flex; flex-direction: column; gap: 25px;">
-                <div class="story-card" style="max-width: 100%; pointer-events: auto;">
-                    <p>國民黨立法院黨團1月16日提出718億新興計畫先行動支案並逕付二讀，共涵蓋38項計畫。國民黨立委羅智強指出，動支案主要是針對地方民生急迫的一些新增計畫，或者是新興計畫裡面的一些支出專案。該案於3月6日通過。
-                    </p>
-                </div>
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <p
+                    style="font-size: 1.2rem; color: var(--text-main); line-height: 1.9; text-align: justify; max-width: 750px; margin: 0 auto; font-weight: 500;">
+                    國民黨立法院黨團1月16日提出718億新興計畫先行動支案並逕付二讀，共涵蓋38項計畫。國民黨立委羅智強指出，動支案主要是針對地方民生急迫的一些新增計畫，或者是新興計畫裡面的一些支出專案。該案於3月6日通過。
+                </p>
                 <div class="dynamic-chart-box"
                     style="position: relative; opacity: 1; visibility: visible !important; transform: none !important; height: auto; width: 100%; padding: 0; pointer-events: auto;">
                     <div class="dash-container-box" style="max-width: 100%;">
@@ -2415,19 +2427,22 @@
 
                         <div class="p-scale-axis-linear">
                             <div class="axis-wrapper linear-ticks-left">
-                                <span>400</span><span>300</span><span>200</span><span>100</span><span>0</span></div>
+                                <span>400</span><span>300</span><span>200</span><span>100</span><span>0</span>
+                            </div>
                             <div class="axis-center-gap"></div>
                             <div class="axis-wrapper linear-ticks-right">
-                                <span>0</span><span>100</span><span>200</span><span>300</span><span>400</span></div>
+                                <span>0</span><span>100</span><span>200</span><span>300</span><span>400</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 25px;">
-                <div class="story-card" style="max-width: 100%; pointer-events: auto;">
-                    <p>根據提案內容，718億先行動支方案多聚焦在對民眾的補助項目，或民生所需之項目。</p>
-                </div>
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <p
+                    style="font-size: 1.2rem; color: var(--text-main); line-height: 1.9; text-align: justify; max-width: 750px; margin: 0 auto; font-weight: 500;">
+                    根據提案內容，718億先行動支方案多聚焦在對民眾的補助項目，或民生所需之項目。
+                </p>
                 <div class="dynamic-chart-box"
                     style="position: relative; opacity: 1; visibility: visible !important; transform: none !important; height: auto; width: 100%; padding: 0; pointer-events: auto;">
                     <div class="ranking-container" style="max-width: 100%;">
@@ -2551,10 +2566,11 @@
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 25px;">
-                <div class="story-card" style="max-width: 100%; pointer-events: auto;">
-                    <p>而被排除在先行動支方案的項目，則多是AI建設、無人機等工作計畫。</p>
-                </div>
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <p
+                    style="font-size: 1.2rem; color: var(--text-main); line-height: 1.9; text-align: justify; max-width: 750px; margin: 0 auto; font-weight: 500;">
+                    而被排除在先行動支方案的項目，則多是AI建設、無人機等工作計畫。
+                </p>
                 <div class="dynamic-chart-box"
                     style="position: relative; opacity: 1; visibility: visible !important; transform: none !important; height: auto; width: 100%; padding: 0; pointer-events: auto;">
                     <div class="ranking-container" style="max-width: 100%;">
@@ -2677,29 +2693,34 @@
                     </div>
                 </div>
             </div>
-
-            <div class="story-card" style="max-width: 100%; pointer-events: auto;">
-                <p>除了排擠掉部分施政項目外，立院通過先行動支方案後預算能不能使用也是爭執焦點。審計部審計長陳瑞敏說明，預算法裡規定，如果有還沒完成審議、但經立法院先行同意動支的，是可以執行的。依據預算法第54條規定，總預算如未按時完成審議，新興資本支出及新增計畫可以依預算法第88條，或經立法院同意後辦理。
-                </p>
+            <div class="chapter-intro"
+                style="max-width: 800px; margin: 0 auto; padding: 100px 20px 40px 20px; text-align: center;">
+                <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 30px;">
+                    718億預算能否先動支仍有疑慮
+                </h2>
             </div>
+            <p
+                style="font-size: 1.2rem; color: var(--text-main); line-height: 1.9; text-align: justify; max-width: 750px; margin: 0 auto; font-weight: 500;">
+                除了排擠掉部分施政項目外，立院通過先行動支方案後預算能不能使用也是爭執焦點。審計部審計長陳瑞敏說明，預算法裡規定，如果有還沒完成審議、但經立法院先行同意動支的，是可以執行的。依據預算法第54條規定，總預算如未按時完成審議，新興資本支出及新增計畫可以依預算法第88條，或經立法院同意後辦理。
+            </p>
 
-            <div class="story-card" style="max-width: 100%; pointer-events: auto;">
-                <p>但是行政院回應，立法院此公決案史無前例，且「暫時同意動支」不符合憲法與預算法的規定。立法院未來審議整本中央政府總預算案時，依然可以刪除或凍結任何一筆新興計畫預算，造成預算執行的不確定性，立院應儘速審議整體總預算案。
-                </p>
-            </div>
+            <p
+                style="font-size: 1.2rem; color: var(--text-main); line-height: 1.9; text-align: justify; max-width: 750px; margin: 0 auto; font-weight: 500;">
+                但是行政院回應，立法院此公決案史無前例，且「暫時同意動支」不符合憲法與預算法的規定。立法院未來審議整本中央政府總預算案時，依然可以刪除或凍結任何一筆新興計畫預算，造成預算執行的不確定性，立院應儘速審議整體總預算案。
+            </p>
 
         </div>
     </section>
 
     <section class="footer-cta">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 25px; color: var(--primary);">結語</h2>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
             <p
-                style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 20px; line-height: 2; font-weight: 500;">
+                style="font-size: 1.35rem; color: var(--text-main); margin: 0 auto 20px auto; max-width: 750px; line-height: 2; font-weight: 500; text-align: justify;">
                 隨著總預算付委，行政院也函請機關新興計畫預算執行作業，TPASS 2.0、生育給付等補助項目目前都已開始進行。
             </p>
+
             <p
-                style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 40px; line-height: 2; font-weight: 500;">
+                style="font-size: 1.35rem; color: var(--text-main); margin: 0 auto 40px auto; max-width: 750px; line-height: 2; font-weight: 500; text-align: justify;">
                 115年度總預算正在審議，在朝野協商及之後院會表決程序中又會出現哪些新議題，也請持續鎖定中央社網站相關報導。
             </p>
 
